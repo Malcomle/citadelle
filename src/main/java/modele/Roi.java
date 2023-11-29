@@ -6,7 +6,7 @@ public class Roi extends Personnage {
         // Appel au constructeur de la classe parent avec des valeurs spécifiques pour le Roi.
         super("Roi", 4, caracteristiques.ROI); // Assumons que Caracteristiques.ROI est une constante.
     }
-d
+
     @Override
     public void percevoirRessourcesSpecifiques() {
         // Cette implémentation suppose l'existence d'une méthode compterQuartiersNobles() dans Joueur.
