@@ -1,4 +1,4 @@
-package org.example;
+package modele;
 
 public class Quartier {
     private String nom;
@@ -27,7 +27,8 @@ public class Quartier {
         }
         this.type="";
     }
-    public int getcout(){
+
+    public int getCout(){
         return this.cout;
     }
     public void setCout(int cout){
@@ -38,19 +39,32 @@ public class Quartier {
             this.cout = 0;
         }
     }
+
     public String getCaracteristiques(){
         return this.caracteristiques;
     }
-    public void setCaracteristiques(String nom){
+    public void setCaracteristiques(String caracteristiques){
         this.caracteristiques = caracteristiques;
     }
 
     public Quartier(String nom, String type, int cout, String caracteristiques) {
-        setNom(nom);
-        setType(type);
-        setCout(cout);
-        setCaracteristiques(caracteristiques);
+        this.nom=nom;
+        this.type=type;
+        this.cout = cout;
+        this.caracteristiques = caracteristiques;
     }
 
+    public Quartier(String nom, String type, int cout) {
+        this.nom=nom;
+        this.type=type;
+        this.cout = cout;
+        this.caracteristiques = "";
+    }
 
+    public Quartier(){
+        this.nom="";
+        this.type="";
+        this.cout = 0;
+        this.caracteristiques = "";
+    }
 }

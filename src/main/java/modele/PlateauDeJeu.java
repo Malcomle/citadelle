@@ -4,37 +4,50 @@ import java.util.ArrayList;
 
 public class PlateauDeJeu {
 
-    private ArrayList<Personnage> listePersonnages;
-    private ArrayList<Joueur> listeJoueurs;
+    private Personnage[] listePersonnages;
+    private Joueur[] listeJoueurs;
     private Pioche pioche;
     private int nombrePersonnages;
     private int nombreJoueurs;
 
     public PlateauDeJeu() {
-        listePersonnages = new ArrayList<>();
-        listeJoueurs = new ArrayList<>();
-        pioche = new Pioche();
+        listePersonnages = new Personnage[8];
+        listeJoueurs = new Joueur[8];
         nombrePersonnages = 0;
         nombreJoueurs = 0;
+        pioche = new Pioche();
     }
 
+
     public void ajouterPersonnage(Personnage nouveau) {
-        listePersonnages.add(nouveau);
-        nombrePersonnages++;
+        if (nombrePersonnages < listePersonnages.length) {
+            listePersonnages[nombrePersonnages++] = nouveau;
+        }
+        else{
+            //gerer l'erreur
+        }
     }
 
     public Personnage getPersonnage(int i) {
-        return listePersonnages.get(i);
+        return listePersonnages[i];
+        //gestion d'erreur à faire
     }
 
     public void ajouterJoueur(Joueur nouveau) {
-        listeJoueurs.add(nouveau);
-        nombreJoueurs++;
+        if (nombreJoueurs < listeJoueurs.length) {
+            listeJoueurs[nombreJoueurs++] = nouveau;
+        }else{
+            //a gerer
+        }
     }
 
     public Joueur getJoueur(int i) {
-        return listeJoueurs.get(i);
+        if (i >= 0 && i < nombreJoueurs) {
+            return listeJoueurs[i];
+        }
+        return null; // gerer l'erreur
     }
+
 
     public int getNombrePersonnages() {
         return nombrePersonnages;
