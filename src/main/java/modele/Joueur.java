@@ -1,5 +1,6 @@
 package modele;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Joueur {
     private String nom;
@@ -9,8 +10,33 @@ public class Joueur {
     private ArrayList<Quartier> main;
     private boolean possedeCouronne;
 
-    public int nbQuartiersDansCite() {
-        return nbQuartiers;
+    public Joueur(String nom){
+        this.nom = nom;
+        this.tresor = 0;
+        this.nbQuartiers = 0;
+        this.possedeCouronne = false;
+        this.cite = new Quartier[8];
+        this.main = new ArrayList<Quartier>();
+    }
+
+    public String getNom(){
+        return this.nom;
+    }
+
+    public ArrayList<Quartier> getMain(){
+        return main;
+    }
+
+    public Quartier[] getCite(){
+        return cite;
+    }
+
+    public boolean getPossedeCouronne(){
+        return possedeCouronne;
+    }
+
+    public void setPossedeCouronne(boolean b){
+        this.possedeCouronne = b;
     }
 
     public void ajouterQuartierDansCite(Quartier quartier) {
@@ -44,33 +70,52 @@ public class Joueur {
         main.add(quartier);
     }
 
-    public void retirerQuartierDansMain() {
+    public Quartier retirerQuartierDansMain() {
         if (!main.isEmpty()) {
-            main.remove(main.size() - 1);
+            Random generateur = new Random();
+            int numeroHasard = generateur.nextInt(this.nbQuartiersDansMain());
+            return main.remove(numeroHasard);
+        } else {
+            return null;
         }
     }
 
-    public int nbQuartiersDansMain() {
-        return main.size();
-    }
 
     public void reinitialiser() {
         cite = new Quartier[cite.length];
         nbQuartiers = 0;
+        tresor = 0;
         main.clear();
     }
 
-    public void ajouterPiece(int nbPiece){
+    public void ajouterPieces(int nbPiece){
         if(nbPiece>0){
             this.tresor += nbPiece;
         }
     }
 
-    public void retirerPiece(int nbPieces) {
-        if (nbPieces > tresor) {
-            tresor = 0;
-        } else {
+    public void retirerPieces(int nbPieces) {
+        if (nbPieces <= tresor && nbPieces > 0) {
             tresor -= nbPieces;
         }
     }
+
+    public int nbPieces(){
+        return tresor;
+    }
+
+    public int nbQuartiersDansMain(){
+        return main.size();
+    }
+
+    public int nbQuartiersDansCite(){
+        int count = 0;
+        for (Quartier q : cite) {
+            if (q != null) {
+                count++;
+            }
+        }
+        return count;
+    }
+
 }

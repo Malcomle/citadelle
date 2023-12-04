@@ -7,18 +7,19 @@ public class Pioche {
     private ArrayList<Quartier> liste;
 
     public Pioche() {
-        liste = new ArrayList<>();
+        this.liste = new ArrayList<>();
     }
 
     public Quartier piocher() {
-        if (liste.isEmpty()) {
+        if (!liste.isEmpty()) {
+            return liste.remove(liste.size() - 1);
+        } else {
             return null;
         }
-        return liste.remove(0);
     }
 
     public void ajouter(Quartier nouveau) {
-        liste.add(nouveau);
+        liste.add(0, nouveau);
     }
 
     public int nombreElements() {
@@ -27,13 +28,11 @@ public class Pioche {
 
     public void melanger() {
         Random generateur = new Random();
-        for (int i = liste.size(); i > 1; i--) {
-            int j = generateur.nextInt(i);
-            int k = generateur.nextInt(i);
-
-            Quartier temp = liste.get(j);
-            liste.set(j, liste.get(k));
-            liste.set(k, temp);
+        for (int i = 0; i < liste.size(); i++) {
+            int j = generateur.nextInt(liste.size());
+            Quartier temp = liste.get(i);
+            liste.set(i, liste.get(j));
+            liste.set(j, temp);
         }
     }
 }

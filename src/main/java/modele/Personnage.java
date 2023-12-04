@@ -24,6 +24,14 @@ public abstract class Personnage {
         return nom;
     }
 
+    public PlateauDeJeu getPlateau(){
+        return plateau;
+    }
+
+    public void setPlateau(PlateauDeJeu plateau){
+        this.plateau = plateau;
+    }
+
     public int getRang() {
         return rang;
     }
@@ -36,11 +44,11 @@ public abstract class Personnage {
         return joueur;
     }
 
-    public boolean isAssassine() {
+    public boolean getAssassine() {
         return assassine;
     }
 
-    public boolean isVole() {
+    public boolean getVole() {
         return vole;
     }
 
@@ -48,17 +56,17 @@ public abstract class Personnage {
         this.joueur = joueur;
     }
 
-    public void setAssassine(boolean assassine) {
-        this.assassine = assassine;
+    public void setAssassine() {
+        assassine = !assassine;
     }
 
-    public void setVole(boolean vole) {
-        this.vole = vole;
+    public void setVole() {
+        this.vole = !vole;
     }
 
     public void ajouterPieces() {
         if (this.joueur != null && !this.assassine) {
-            this.joueur.ajouterPiece(2);
+            this.joueur.ajouterPieces(2);
         }
     }
 

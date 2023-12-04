@@ -20,32 +20,30 @@ public class PlateauDeJeu {
 
 
     public void ajouterPersonnage(Personnage nouveau) {
-        if (nombrePersonnages < listePersonnages.length) {
+        if (nouveau != null && nombrePersonnages < listePersonnages.length) {
             listePersonnages[nombrePersonnages++] = nouveau;
+            nouveau.setPlateau(this);
         }
-        else{
-            //gerer l'erreur
-        }
-    }
-
-    public Personnage getPersonnage(int i) {
-        return listePersonnages[i];
-        //gestion d'erreur à faire
     }
 
     public void ajouterJoueur(Joueur nouveau) {
         if (nombreJoueurs < listeJoueurs.length) {
             listeJoueurs[nombreJoueurs++] = nouveau;
-        }else{
-            //a gerer
         }
     }
 
+    public Personnage getPersonnage(int i) {
+        if (i >= 0 && i < listePersonnages.length-1) {
+            return listePersonnages[i];
+        }
+        return null;
+    }
+
     public Joueur getJoueur(int i) {
-        if (i >= 0 && i < nombreJoueurs) {
+        if (i >= 0 && i < listeJoueurs.length-1) {
             return listeJoueurs[i];
         }
-        return null; // gerer l'erreur
+        return null;
     }
 
 
@@ -60,4 +58,5 @@ public class PlateauDeJeu {
     public Pioche getPioche() {
         return pioche;
     }
+
 }
