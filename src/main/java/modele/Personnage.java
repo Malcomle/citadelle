@@ -20,6 +20,17 @@ public abstract class Personnage {
         this.vole = false;
     }
 
+    // remise en question de ce controlleur innutile
+    //forcé à cause du test assassin
+    public Personnage(){
+        this.nom = "";
+        this.rang = 1;
+        this.caracteristiques = "";
+        this.joueur = null;
+        this.assassine = false;
+        this.vole = false;
+    }
+
     public String getNom() {
         return nom;
     }
@@ -53,7 +64,9 @@ public abstract class Personnage {
     }
 
     public void setJoueur(Joueur joueur) {
+
         this.joueur = joueur;
+        this.joueur.monPersonnage = this;
     }
 
     public void setAssassine() {
@@ -89,7 +102,6 @@ public abstract class Personnage {
     }
 
     public abstract void utiliserPouvoir();
-
 
     public void reinitialiser() {
         this.joueur = null;
