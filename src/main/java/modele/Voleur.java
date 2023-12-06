@@ -3,10 +3,10 @@ package modele;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class Assassin extends Personnage{
+public class Voleur extends Personnage{
     private static Scanner sc = new Scanner(System.in);
 
-    public Assassin() {super("Assassin", 1, Caracteristiques.ASSASSIN);}
+    public Voleur() {super("Voleur", 2, Caracteristiques.VOLEUR);}
 
     @Override
     public void utiliserPouvoir() {
@@ -16,7 +16,7 @@ public class Assassin extends Personnage{
         int personnageNbChoisi = 0;
         Personnage personnageChoisi = null;
 
-        System.out.println("Quel personnage voulez-vous assassiner ?");
+        System.out.println("Quel souhaitez vous voler ?");
 
         for (int i = 0; i < nbPersonnage; i++){
             System.out.println((i+1)+": "+plateau.getPersonnage(i).getNom());
@@ -32,11 +32,21 @@ public class Assassin extends Personnage{
 
                 personnageChoisi = plateau.getPersonnage(personnageNbChoisi);
 
-                if(personnageChoisi instanceof Assassin){
-                    System.out.println("Vous ne pouvez pas vous assassinez vous même");
-                }else {
-                    System.out.println("Vous venez d'assassiner: "+ personnageChoisi.getNom());
-                    personnageChoisi.setAssassine();
+                if(personnageChoisi instanceof Voleur){
+                    System.out.println("Vous ne pouvez pas vous voler vous même");
+                }else if(personnageChoisi.getRang() == 1){
+                    System.out.println("Vous ne pouvez pas voler un personnage de rang 1");
+                }
+                else {
+                    Joueur joueurChoisi = personnageChoisi.getJoueur();
+
+                    System.out.println("Vous venez de voler: "+ personnageChoisi.getNom());
+
+                    personnageChoisi.setVole();
+
+                    this.getJoueur().ajouterPieces(joueurChoisi.nbPieces());
+                    joueurChoisi.retirerPieces(joueurChoisi.nbPieces());
+
                     continu = false;
                 }
             }catch (InputMismatchException e){
