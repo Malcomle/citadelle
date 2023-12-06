@@ -5,8 +5,6 @@ import java.util.Scanner;
 
 public class Marchande extends Personnage{
 
-    Scanner sc = new Scanner(System.in);
-
     public Marchande() {super("Marchande", 6, Caracteristiques.MARCHANDE);}
 
 
