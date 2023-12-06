@@ -1,8 +1,7 @@
-package modele;
+package test;
 
 import modele.Pioche;
 import modele.Quartier;
-import test.Test;
 
 public class TestPioche {
 	public static void main(String[] args) {
