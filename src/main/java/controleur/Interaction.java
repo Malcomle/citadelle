@@ -11,11 +11,11 @@ public class Interaction {
         boolean continu = true;
         do {
             try {
+                System.out.print("Votre choix:");
                 i = sc.nextInt();
                 continu = false;
             } catch (InputMismatchException e) {
-                System.out.print("Veuillez rentrer un chiffre : ");
-                sc.next();
+                System.out.print("Entrez une valeur correct : ");
             }
         } while(continu);
         return i;
@@ -28,17 +28,17 @@ public class Interaction {
         boolean continu = true;
         do {
             try {
+                System.out.print("Votre choix: ");
                 i = sc.nextInt();
 
                 if (i >= borneMin && i < borneMax) {
                     continu = false;
                 } else {
-                    System.out.print("Veuillez rentrer un chiffre entre " + borneMin + " et " + (borneMax - 1) + " : ");
+                    System.out.println("Veuillez rentrer un chiffre entre " + borneMin + " et " + (borneMax - 1) + " : ");
                 }
 
             } catch (InputMismatchException e) {
-                System.out.print("Veuillez rentrer un chiffre : ");
-                sc.next();
+                System.out.print("Veuillez entrer une valeur correct");
             }
         } while(continu);
         return i;
