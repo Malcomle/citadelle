@@ -6,8 +6,8 @@
     <file url="file://$PROJECT_DIR$/src/main/java/test/TestAssassin.java" charset="ISO-8859-1" />
     <file url="file://$PROJECT_DIR$/src/main/java/test/TestInteraction.java" charset="ISO-8859-1" />
     <file url="file://$PROJECT_DIR$/src/main/java/test/TestJoueur.java" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/src/main/java/test/TestMarchande.java" charset="ISO-8859-1" />
     <file url="file://$PROJECT_DIR$/src/main/java/test/TestPlateauDeJeu.java" charset="ISO-8859-1" />
-    <file url="file://$PROJECT_DIR$/src/main/java/test/TestQuartier.java" charset="ISO-8859-1" />
     <file url="file://$PROJECT_DIR$/src/main/java/test/TestQuartier.java" charset="ISO-8859-1" />
     <file url="file://$PROJECT_DIR$/src/main/java/test/TestRoi.java" charset="ISO-8859-1" />
     <file url="file://$PROJECT_DIR$/src/main/java/test/TestVoleur.java" charset="UTF-8" />
