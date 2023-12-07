@@ -2,26 +2,7 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
-<<<<<<< HEAD
-    <file url="file://$PROJECT_DIR$/src/main/java/test/TestArchitecte.java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/src/main/java/test/TestAssassin.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/java/test/TestCondottiere.java" charset="ISO-8859-1" />
-    <file url="file://$PROJECT_DIR$/src/main/java/test/TestEveque.java" charset="ISO-8859-1" />
-    <file url="file://$PROJECT_DIR$/src/main/java/test/TestInteraction.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/java/test/TestJoueur.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/java/test/TestMarchande.java" charset="windows-1252" />
-    <file url="file://$PROJECT_DIR$/src/main/java/test/TestRoi.java" charset="UTF-8" />
-=======
-    <file url="file://$PROJECT_DIR$/src/main/java/modele/Caracteristiques.java" charset="ISO-8859-1" />
-    <file url="file://$PROJECT_DIR$/src/main/java/test/TestAssassin.java" charset="ISO-8859-1" />
-    <file url="file://$PROJECT_DIR$/src/main/java/test/TestInteraction.java" charset="ISO-8859-1" />
-    <file url="file://$PROJECT_DIR$/src/main/java/test/TestJoueur.java" charset="ISO-8859-1" />
-    <file url="file://$PROJECT_DIR$/src/main/java/test/TestMarchande.java" charset="ISO-8859-1" />
-    <file url="file://$PROJECT_DIR$/src/main/java/test/TestPlateauDeJeu.java" charset="ISO-8859-1" />
-    <file url="file://$PROJECT_DIR$/src/main/java/test/TestQuartier.java" charset="ISO-8859-1" />
-    <file url="file://$PROJECT_DIR$/src/main/java/test/TestRoi.java" charset="ISO-8859-1" />
->>>>>>> 2e532e9d927db99c7f77e044fa85aea050aa0ab8
-    <file url="file://$PROJECT_DIR$/src/main/java/test/TestVoleur.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/test/TestEveque.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
   </component>
 </project>

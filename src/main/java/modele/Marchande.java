@@ -7,8 +7,6 @@ public class Marchande extends Personnage{
 
     public Marchande() {super("Marchande", 6, Caracteristiques.MARCHANDE);}
 
-
-
     @Override
     public void utiliserPouvoir() {
         boolean continu = true;
@@ -23,6 +21,12 @@ public class Marchande extends Personnage{
             }
         }while (continu);
     }
+
+    @Override
+    public void utiliserPouvoirAvatar() {
+
+    }
+
     @Override
     public void percevoirRessourcesSpecifiques(){
         if (this.getJoueur() != null) {

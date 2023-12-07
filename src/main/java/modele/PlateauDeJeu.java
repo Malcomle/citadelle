@@ -59,4 +59,8 @@ public class PlateauDeJeu {
         return pioche;
     }
 
+    public void setPioche(Pioche p) {
+        this.pioche = p;
+    }
+
 }

@@ -1,47 +1,66 @@
 package modele;
 
+import controleur.Interaction;
+
 import java.util.InputMismatchException;
+import java.util.Random;
 import java.util.Scanner;
 
-public class Assassin extends Personnage{
-    private static Scanner sc = new Scanner(System.in);
+public class Assassin extends Personnage {
 
-    public Assassin() {super("Assassin", 1, Caracteristiques.ASSASSIN);}
+    public Assassin() {
+        super("Assassin", 1, Caracteristiques.ASSASSIN);
+    }
 
     @Override
     public void utiliserPouvoir() {
-        boolean continu = true;
         PlateauDeJeu plateau = this.getPlateau();
         int nbPersonnage = plateau.getNombrePersonnages();
         int personnageNbChoisi = 0;
-        Personnage personnageChoisi = null;
 
         System.out.println("Quel personnage voulez-vous assassiner ?");
 
-        for (int i = 0; i < nbPersonnage; i++){
-            System.out.println((i+1)+": "+plateau.getPersonnage(i).getNom());
+        for (int i = 0; i < nbPersonnage; i++) {
+            System.out.println((i + 1) + ": " + plateau.getPersonnage(i).getNom());
         }
+
+        boolean continu = true;
         do {
             try {
-                System.out.print("Votre choix: ");
-                personnageNbChoisi = sc.nextInt()-1;
+                personnageNbChoisi = Interaction.lireUnEntier(1, nbPersonnage + 1) - 1;
 
-                if(personnageNbChoisi < 0 || personnageNbChoisi >= nbPersonnage){
+                if (personnageNbChoisi < 0 || personnageNbChoisi >= nbPersonnage) {
                     throw new InputMismatchException();
                 }
 
-                personnageChoisi = plateau.getPersonnage(personnageNbChoisi);
-
-                if(personnageChoisi instanceof Assassin){
-                    System.out.println("Vous ne pouvez pas vous assassinez vous même");
-                }else {
-                    System.out.println("Vous venez d'assassiner: "+ personnageChoisi.getNom());
-                    personnageChoisi.setAssassine();
-                    continu = false;
-                }
-            }catch (InputMismatchException e){
-                System.out.println("Veuillez entrer une valeur correct");
+                executerAssassinat(personnageNbChoisi);
+                continu = false;
+            } catch (InputMismatchException e) {
+                System.out.println("Veuillez entrer une valeur correcte");
             }
-        }while (continu);
+        } while (continu);
+    }
+
+    @Override
+    public void utiliserPouvoirAvatar() {
+        PlateauDeJeu plateau = this.getPlateau();
+        int nbPersonnage = plateau.getNombrePersonnages();
+
+        Random random = new Random();
+        int personnageNbChoisi;
+
+        do {
+            personnageNbChoisi = random.nextInt(nbPersonnage);
+        } while (plateau.getPersonnage(personnageNbChoisi) instanceof Assassin);
+
+        executerAssassinat(personnageNbChoisi);
+    }
+
+    private void executerAssassinat(int indexPersonnage) {
+        PlateauDeJeu plateau = this.getPlateau();
+        Personnage personnageChoisi = plateau.getPersonnage(indexPersonnage);
+
+        System.out.println("Vous venez d'assassiner: " + personnageChoisi.getNom());
+        personnageChoisi.setAssassine();
     }
 }

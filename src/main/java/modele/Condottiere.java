@@ -17,10 +17,10 @@ public class Condottiere extends Personnage {
             System.out.println("Voici la liste des joueurs et le contenu de leur cité :");
             for (int i = 0; i < plateau.getNombreJoueurs(); i++) {
                 Joueur joueur = plateau.getJoueur(i);
-                if (joueur != this.getJoueur()) { // Condottiere ne peut pas se cibler soi-même
+                if (joueur != this.getJoueur()) {
                     System.out.print((i + 1) + " " + joueur.getNom() + ": ");
                     for (Quartier quartier : joueur.getCite()) {
-                        if (quartier != null) { // Vérifier si le quartier est construit
+                        if (quartier != null) {
                             System.out.print(quartier.getNom() + "(coût " + quartier.getCout() + "), ");
                         }
                     }
@@ -48,6 +48,12 @@ public class Condottiere extends Personnage {
             }
         }
     }
+
+    @Override
+    public void utiliserPouvoirAvatar() {
+
+    }
+
     @Override
     public void percevoirRessourcesSpecifiques() {
         if (this.getJoueur() != null) {
