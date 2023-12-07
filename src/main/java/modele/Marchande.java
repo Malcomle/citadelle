@@ -1,13 +1,10 @@
 package modele;
 
 import java.util.InputMismatchException;
-import java.util.Scanner;
 
 public class Marchande extends Personnage{
 
     public Marchande() {super("Marchande", 6, Caracteristiques.MARCHANDE);}
-
-
 
     @Override
     public void utiliserPouvoir() {
