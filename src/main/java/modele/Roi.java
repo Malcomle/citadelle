@@ -13,10 +13,6 @@ public class Roi extends Personnage {
         }
     }
 
-    @Override
-    public void utiliserPouvoirAvatar() {
-
-    }
 
     @Override
     public void percevoirRessourcesSpecifiques() {
@@ -31,6 +27,25 @@ public class Roi extends Personnage {
             this.getJoueur().ajouterPieces(nbQuartiersNobles);
             System.out.println(nbQuartiersNobles + " pièces ajoutées pour les quartiers nobles");
         }
+    }
+    @Override
+    public void utiliserPouvoirAvatar() {
+        PlateauDeJeu plateau = this.getPlateau();
+        int nbPersonnage = plateau.getNombrePersonnages();
+
+        Random random = new Random();
+        int personnageNbChoisi;
+
+        do {
+            personnageNbChoisi = random.nextInt(nbPersonnage);
+        } while (plateau.getPersonnage(personnageNbChoisi) instanceof Roi);
+
+        executerRoi(personnageNbChoisi);
+    }
+    private void executerRoi(int indexPersonnage) {
+        PlateauDeJeu plateau = this.getPlateau();
+        Personnage personnageChoisi = plateau.getPersonnage(indexPersonnage);
+
     }
 
 }
