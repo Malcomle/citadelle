@@ -5,7 +5,6 @@ import controleur.Interaction;
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
-
 public class Voleur extends Personnage{
     Random random = new Random();
 
