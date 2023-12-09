@@ -45,8 +45,8 @@ public class Joueur {
         return possedeCouronne;
     }
 
-    public void setPossedeCouronne(boolean b){
-        this.possedeCouronne = b;
+    public void setPossedeCouronne(){
+        this.possedeCouronne = !this.possedeCouronne;
     }
 
     public void ajouterQuartierDansCite(Quartier quartier) {

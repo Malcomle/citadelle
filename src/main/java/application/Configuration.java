@@ -34,16 +34,17 @@ public class Configuration {
 
         plateau.ajouterPersonnage(new Assassin());
         plateau.ajouterPersonnage(new Condottiere());
+        plateau.ajouterPersonnage(new Architecte());
         plateau.ajouterPersonnage(new Eveque());
         plateau.ajouterPersonnage(new Magicienne());
         plateau.ajouterPersonnage(new Marchande());
         plateau.ajouterPersonnage(new Roi());
         plateau.ajouterPersonnage(new Voleur());
 
-        plateau.ajouterJoueur(new Joueur("Sybille"));
-        plateau.ajouterJoueur(new Joueur("Enric"));
-        plateau.ajouterJoueur(new Joueur("Romain"));
-        plateau.ajouterJoueur(new Joueur("Malcom"));
+        plateau.ajouterJoueur(new Joueur("Baron Valdemar"));
+        plateau.ajouterJoueur(new Joueur("Marquis de Luneville"));
+        plateau.ajouterJoueur(new Joueur("Dame Seraphina"));
+        plateau.ajouterJoueur(new Joueur("Maître Corbin"));
 
         plateau.setPioche(pioche);
 
