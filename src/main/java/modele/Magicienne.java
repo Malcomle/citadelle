@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Magicienne extends Personnage{
 
-    public Magicienne() {super("Magicien", 3, Caracteristiques.ASSASSIN);}
+    public Magicienne() {super("Magicien", 3, Caracteristiques.MAGICIENNE);}
 
     @Override
     public void utiliserPouvoir() {
@@ -93,5 +93,10 @@ public class Magicienne extends Personnage{
                 }
             }
         }
+    }
+
+    @Override
+    public void utiliserPouvoirAvatar() {
+
     }
 }

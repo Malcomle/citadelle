@@ -20,6 +20,12 @@ public class Marchande extends Personnage{
             }
         }while (continu);
     }
+
+    @Override
+    public void utiliserPouvoirAvatar() {
+
+    }
+
     @Override
     public void percevoirRessourcesSpecifiques(){
         if (this.getJoueur() != null) {
