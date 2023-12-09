@@ -12,6 +12,9 @@ public class Joueur {
 
     protected Personnage monPersonnage;
 
+    public boolean isEveque() {
+        return this.monPersonnage instanceof Eveque;
+    }
     public Joueur(String nom){
         this.nom = nom;
         this.tresor = 0;
@@ -65,7 +68,12 @@ public class Joueur {
         for (int i = 0; i < cite.length; i++) {
             Quartier q = cite[i];
             if (q != null && q.getNom().equals(nom)) {
-                cite[i] = null;
+                // Décaler les quartiers suivants d'une position vers l'avant
+                for (int j = i; j < cite.length - 1; j++) {
+                    cite[j] = cite[j + 1];
+                }
+                // Mettre le dernier élément à null
+                cite[cite.length - 1] = null;
                 nbQuartiers--;
                 return q;
             }

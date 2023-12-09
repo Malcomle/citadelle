@@ -1,5 +1,7 @@
 package modele;
 
+import java.util.Random;
+
 public class Roi extends Personnage {
     public Roi() {
         super("Roi", 4, Caracteristiques.ROI);

@@ -1,6 +1,8 @@
 package modele;
 import controleur.Interaction;
 
+import java.util.Random;
+
 
 public class Condottiere extends Personnage {
     public Condottiere() {
@@ -10,48 +12,75 @@ public class Condottiere extends Personnage {
     @Override
     public void utiliserPouvoir() {
         PlateauDeJeu plateau = this.getPlateau();
-        System.out.println("Voulez-vous utiliser votre pouvoir de destruction ? (o pour oui, n pour non)");
-        boolean utiliserPouvoir = Interaction.lireOuiOuNon();
+        System.out.println("Choisissez le joueur cible (entrez un numéro):");
 
-        if (utiliserPouvoir) {
-            System.out.println("Voici la liste des joueurs et le contenu de leur cité :");
-            for (int i = 0; i < plateau.getNombreJoueurs(); i++) {
-                Joueur joueur = plateau.getJoueur(i);
-                if (joueur != this.getJoueur()) {
-                    System.out.print((i + 1) + " " + joueur.getNom() + ": ");
-                    for (Quartier quartier : joueur.getCite()) {
-                        if (quartier != null) {
-                            System.out.print(quartier.getNom() + "(coût " + quartier.getCout() + "), ");
-                        }
-                    }
-                    System.out.println();
-                }
+        for (int i = 0; i < plateau.getNombreJoueurs(); i++) {
+            Joueur joueur = plateau.getJoueur(i);
+            if (!joueur.equals(this.getJoueur())) {
+                System.out.println(i + ": " + joueur.getNom());
             }
+        }
 
-            System.out.println("Pour information, vous avez " + this.getJoueur().nbPieces() + " pièces d’or dans votre trésor.");
-            int choixJoueur = Interaction.lireUnEntier(0, plateau.getNombreJoueurs() + 1) - 1;
+        int choixJoueur = Interaction.lireUnEntier(0, plateau.getNombreJoueurs());
+        Joueur cible = plateau.getJoueur(choixJoueur);
+        if (cible.equals(this.getJoueur())) {
+            System.out.println("Le Condottiere ne peut pas cibler sa propre cité.");
+            return;
+        }
 
-            if (choixJoueur >= 0 && choixJoueur < plateau.getNombreJoueurs()) {
-                Joueur cible = plateau.getJoueur(choixJoueur);
-                System.out.println("Quel quartier choisissez-vous ?");
-                int choixQuartier = Interaction.lireUnEntier(1, cible.nbQuartiersDansCite() + 1) - 1;
 
-                Quartier quartierACibler = cible.getCite()[choixQuartier];
-                if (quartierACibler != null && this.getJoueur().nbPieces() >= quartierACibler.getCout()) {
-                    this.getJoueur().retirerPieces(quartierACibler.getCout());
-                    cible.retirerQuartierDansCite(quartierACibler.getNom());
-                    System.out.println("=> On retire l’" + quartierACibler.getNom() + " à " + cible.getNom());
-                    System.out.println("Pour information, votre trésor est constitué de " + this.getJoueur().nbPieces() + " pièce(s) d’or.");
-                } else {
-                    System.out.println("Votre trésor n’est pas suffisant ou le quartier n'existe pas.");
-                }
+        System.out.println("Choisissez le quartier à détruire dans la cité de " + cible.getNom() + ":");
+
+        Quartier[] cite = cible.getCite();
+        for (int i = 0; i < cite.length; i++) {
+            if (cite[i] != null) {
+                System.out.println(i + ": " + cite[i].getNom() + " (Coût: " + cite[i].getCout() + ")");
             }
+        }
+
+        int choixQuartier = Interaction.lireUnEntier(0, cite.length);
+        Quartier quartierACibler = cite[choixQuartier];
+
+        if (quartierACibler != null) {
+            int coutDestruction = quartierACibler.getCout() - 1;
+            if (this.getJoueur().nbPieces() >= coutDestruction) {
+                this.getJoueur().retirerPieces(coutDestruction);
+                cible.retirerQuartierDansCite(quartierACibler.getNom());
+                System.out.println("Le Condottiere a détruit le quartier " + quartierACibler.getNom() + " en payant " + coutDestruction + " pièce(s) d'or.");
+            } else {
+                System.out.println("Pas assez de pièces pour détruire ce quartier.");
+            }
+        } else {
+            System.out.println("Aucun quartier sélectionné pour la destruction.");
         }
     }
 
+
     @Override
     public void utiliserPouvoirAvatar() {
+        PlateauDeJeu plateau = this.getPlateau();
+        Random random = new Random();
+        Joueur cible;
+        Quartier quartierACibler;
+        int choixJoueur;
+        int choixQuartier;
 
+        do {
+            choixJoueur = random.nextInt(plateau.getNombreJoueurs());
+            cible = plateau.getJoueur(choixJoueur);
+        } while (cible == this.getJoueur() || cible.isEveque());;
+
+        do {
+            choixQuartier = random.nextInt(cible.nbQuartiersDansCite());
+            quartierACibler = cible.getCite()[choixQuartier];
+        } while (quartierACibler == null || quartierACibler.getCout() == 1);
+
+        int coutDestruction = quartierACibler.getCout() - 1;
+        if (this.getJoueur().nbPieces() >= coutDestruction) {
+            this.getJoueur().retirerPieces(coutDestruction);
+            cible.retirerQuartierDansCite(quartierACibler.getNom());
+            System.out.println("L'IA Condottiere a détruit le quartier " + quartierACibler.getNom() + " en payant " + coutDestruction + " pièce(s) d'or.");
+        }
     }
 
     @Override
