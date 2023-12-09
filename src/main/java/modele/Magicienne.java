@@ -3,6 +3,7 @@ package modele;
 import controleur.Interaction;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Magicienne extends Personnage{
 
@@ -94,9 +95,50 @@ public class Magicienne extends Personnage{
             }
         }
     }
-
     @Override
     public void utiliserPouvoirAvatar() {
+            Random rand = new Random();
+            PlateauDeJeu plateau = this.getPlateau();
+            int nbJoueur = plateau.getNombreJoueurs();
+            boolean echangeCartes = rand.nextBoolean();
+
+            if (echangeCartes) {
+                Joueur joueurChoisi;
+                int joueurNbChoisi;
+                do {
+                    joueurNbChoisi = rand.nextInt(nbJoueur);
+                    joueurChoisi = plateau.getJoueur(joueurNbChoisi);
+                } while (joueurChoisi == this.getJoueur() || joueurChoisi.getMonPersonnage() instanceof Magicienne);
+
+                ArrayList<Quartier> mainJoueur = joueurChoisi.getMain();
+                ArrayList<Quartier> mainMagicien = this.getJoueur().getMain();
+                ArrayList<Quartier> temp = new ArrayList<>(mainJoueur);
+
+                mainJoueur.clear();
+                mainJoueur.addAll(mainMagicien);
+                mainMagicien.clear();
+                mainMagicien.addAll(temp);
+                System.out.println(this.getNom() + " a échangé des cartes avec le joueur " + (joueurNbChoisi + 1));
+
+            } else {
+                int nbCartesAMelanger = 1 + rand.nextInt(this.getJoueur().nbQuartiersDansMain());
+                ArrayList<Quartier> mainMagicien = this.getJoueur().getMain();
+                for (int i = 0; i < nbCartesAMelanger; i++) {
+                    int indexCarte = rand.nextInt(mainMagicien.size());
+                    Quartier retireCarte = mainMagicien.remove(indexCarte);
+                    this.getPlateau().getPioche().ajouter(retireCarte);
+                    System.out.println(this.getNom() + " a retiré une carte de sa main.");
+                }
+
+                for (int i = 0; i < nbCartesAMelanger; i++) {
+                    Quartier quartierAjoute = this.getPlateau().getPioche().piocher();
+                    mainMagicien.add(quartierAjoute);
+                    System.out.println(this.getNom() + " a ajouté une nouvelle carte à sa main.");
+                }
+
+                System.out.println(this.getNom() + " a terminé l'échange de " + nbCartesAMelanger + " cartes.");
+            }
+        }
 
     }
-}
+

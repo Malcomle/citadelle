@@ -2,6 +2,7 @@ package modele;
 
 import controleur.Interaction;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Architecte extends Personnage{
 
@@ -19,7 +20,7 @@ public class Architecte extends Personnage{
 
     }
 
-    private void piocherCartesSupplementaires(Joueur joueur, PiocheQuartier piocheQuartier, int nombreCartes) {
+   private void piocherCartesSupplementaires(Joueur joueur, PiocheQuartier piocheQuartier, int nombreCartes) {
         List<CarteQuartier> cartesPiochees = piocheQuartier.piocherCartes(nombreCartes);
         joueur.ajouterCartesQuartier(cartesPiochees);
         System.out.println(joueur.getNom() + " a pioché " + nombreCartes + " cartes quartier supplémentaires.");
@@ -39,7 +40,7 @@ public class Architecte extends Personnage{
 
         executerArchitecte(personnageNbChoisi);
     }
-    
+
     private void executerArchitecte(int indexPersonnage) {
         PlateauDeJeu plateau = this.getPlateau();
         Personnage personnageChoisi = plateau.getPersonnage(indexPersonnage);

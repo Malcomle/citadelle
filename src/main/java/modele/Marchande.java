@@ -8,22 +8,15 @@ public class Marchande extends Personnage{
 
     @Override
     public void utiliserPouvoir() {
-        boolean continu = true;
-        do {
-            try {
                 if (this.getJoueur() != null) {
                     this.getJoueur().ajouterPieces(1);
+                    System.out.println("Ajouter 1 pièce");
                 }
-
-            }catch (InputMismatchException e){
-                System.out.println("Error !");
-            }
-        }while (continu);
     }
 
     @Override
     public void utiliserPouvoirAvatar() {
-
+        utiliserPouvoir();
     }
 
     @Override
@@ -37,7 +30,7 @@ public class Marchande extends Personnage{
                 }
             }
             this.getJoueur().ajouterPieces(nbQuartiersCommercants);
-            System.out.println(nbQuartiersCommercants + " pièces ajoutées pour les quartiers commerçants");
+            System.out.println("Ajouter " + nbQuartiersCommercants + " pièce" + (nbQuartiersCommercants > 1 ? "s" : ""));
         }
     }
 

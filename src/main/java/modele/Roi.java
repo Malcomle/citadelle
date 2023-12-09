@@ -1,5 +1,7 @@
 package modele;
 
+import java.util.Random;
+
 public class Roi extends Personnage {
     public Roi() {
         super("Roi", 4, Caracteristiques.ROI);
@@ -45,7 +47,6 @@ public class Roi extends Personnage {
     private void executerRoi(int indexPersonnage) {
         PlateauDeJeu plateau = this.getPlateau();
         Personnage personnageChoisi = plateau.getPersonnage(indexPersonnage);
-
     }
 
 }
