@@ -68,7 +68,7 @@ public class Condottiere extends Personnage {
         do {
             choixJoueur = random.nextInt(plateau.getNombreJoueurs());
             cible = plateau.getJoueur(choixJoueur);
-        } while (cible == this.getJoueur() || cible.isEveque());;
+        } while (cible == this.getJoueur() || cible.isEveque());
 
         do {
             choixQuartier = random.nextInt(cible.nbQuartiersDansCite());
