@@ -1,11 +1,11 @@
 package org.example;
 
+import application.Jeu;
 import controleur.Interaction;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.printf("Hello and welcome!");
-        boolean b = Interaction.lireOuiOuNon();
-        System.out.println(b);
+        Jeu jeu = new Jeu();
+        jeu.jouer();
     }
 }

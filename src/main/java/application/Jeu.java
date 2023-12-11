@@ -1,11 +1,13 @@
 package application;
 
 import controleur.Interaction;
-import modele.Joueur;
-import modele.Pioche;
-import modele.PlateauDeJeu;
+import modele.*;
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.util.Collections;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Jeu {
     private PlateauDeJeu plateauDeJeu;
@@ -13,35 +15,79 @@ public class Jeu {
     private Random generateur;
 
     public Jeu(){
-
     }
 
     public void jouer(){
         int choice;
 
         System.out.println("Bienvenue dans citadelle !");
-        System.out.println("Que souhaitez vous faire");
+        System.out.println("Que souhaitez-vous faire");
 
         System.out.println("______________");
-        System.out.println("[1]: Jouer une partie");
-        System.out.println("[2]: Voir les regles");
-        System.out.println("[3]: Quitter");
+        System.out.println("[1]: Jouer une partie solo");
+        System.out.println("[2]: Heberger une partie en ligne");
+        System.out.println("[3]: Rejoindre une partie");
+        System.out.println("[4]: Voir les règles");
+        System.out.println("[5]: Quitter");
         System.out.println("______________");
 
-        choice = Interaction.lireUnEntier(1,3);
+        choice = Interaction.lireUnEntier(1,4);
 
         switch (choice){
             case 1:
                 jouerPartie();
                 break;
             case 2:
-                afficherLesRegles();
+                hebergerPartie();
                 break;
             case 3:
+                rejoindrePartie();
+                break;
+            case 4:
+                afficherLesRegles();
+                break;
+            case 5:
                 System.out.println("À une prochaine fois !");
                 break;
         }
-    };
+    }
+
+    private void hebergerPartie() {
+        Server server = new Server();
+        int port = 6666;
+        System.out.println("Hébergement d'une partie sur le port " + port);
+
+        server.setServerListener((clientInfo, pseudo) -> {
+            System.out.println("Nouveau joueur connecté: " + pseudo);
+        });
+
+        server.start(port);
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Appuyez sur Entrée pour démarrer la partie...");
+
+        sc.nextLine();
+
+        initialisation();
+    }
+
+    private void rejoindrePartie() {
+        Client client = new Client();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Entrez votre nom de joueur : ");
+        String nomJoueur = scanner.nextLine();
+
+        System.out.println("Entrez l'adresse IP du serveur pour rejoindre une partie : ");
+        //String adresseIP = scanner.nextLine();
+        String adresseIP = "172.16.80.66";
+
+        int port = 6666; // Port par défaut, peut être changé ou demandé à l'utilisateur
+        System.out.println("Connexion au serveur " + adresseIP + " sur le port " + port);
+        client.startConnection(adresseIP, port, nomJoueur); // Connexion au serveur avec le nom du joueur
+    }
+
 
     private void afficherLesRegles(){
         //todo Affichage des règles
@@ -54,6 +100,7 @@ public class Jeu {
         choixPersonnages();
     };
     private void initialisation(){
+        System.out.println("test");
         Pioche pioche = Configuration.nouvellePioche();
         String nom;
         this.generateur = new Random();
@@ -102,8 +149,6 @@ public class Jeu {
                 }
             }
         }
-
-
     };
     private void percevoirRessource(){};
     private void calculDesPoints(){};
