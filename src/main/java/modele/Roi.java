@@ -11,7 +11,7 @@ public class Roi extends Personnage {
     public void utiliserPouvoir() {
         System.out.println("Je prends la couronne");
         if (this.getJoueur() != null) {
-            this.getJoueur().setPossedeCouronne();
+            this.getJoueur().setPossedeCouronne(true);
         }
     }
 
