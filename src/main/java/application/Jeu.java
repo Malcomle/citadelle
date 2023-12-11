@@ -83,6 +83,27 @@ public class Jeu {
     private void choixPersonnages(){
         System.out.println("Choix des personnages : ");
 
+        int faceCaché1 = generateur.nextInt(8);
+        int faceVisible = generateur.nextInt(8);
+        int faceVisible2 = generateur.nextInt(8);
+
+        System.out.println("Le personnage `"+plateauDeJeu.getPersonnage(faceVisible).getNom()+"` est écarté face visible");
+        System.out.println("Le personnage `"+plateauDeJeu.getPersonnage(faceVisible2).getNom()+"` est écarté face visible");
+        System.out.println("Le personnage est écarté face cachée");
+
+        int couronne = 0;
+        for (int i = 0; i<4;i++) {
+            if(plateauDeJeu.getJoueur(i).getPossedeCouronne()){
+                couronne = i;
+                if(i == numeroConfiguration){
+                    System.out.println("Vous possedez la couronne");
+                }else{
+                    System.out.println(plateauDeJeu.getJoueur(i).getNom()+" possède la couronne");
+                }
+            }
+        }
+
+
     };
     private void percevoirRessource(){};
     private void calculDesPoints(){};
