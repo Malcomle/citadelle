@@ -67,12 +67,15 @@ public class Jeu {
         }).start();
 
         Client hostClient = new Client();
-        String hostName = "hote";
+        System.out.println("Entrez votre nom de joueur : ");
+        Scanner sc  = new Scanner(System.in);
+        String nomJoueur = sc.nextLine();
+
 
         try {
             new Thread(() -> {
                 try {
-                    hostClient.startConnection("localhost", port, hostName);
+                    hostClient.startConnection("localhost", port, nomJoueur);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -106,7 +109,7 @@ public class Jeu {
         try {
             new Thread(() -> {
                 try {
-                    client.startConnection("localhost", port, nomJoueur);
+                    client.startConnection("192.168.1.13", port, nomJoueur);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
