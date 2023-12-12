@@ -10,7 +10,10 @@ public class Joueur {
     private ArrayList<Quartier> main;
     private boolean possedeCouronne;
 
+
     protected Personnage monPersonnage;
+
+
 
     public boolean isEveque() {
         return this.monPersonnage instanceof Eveque;
