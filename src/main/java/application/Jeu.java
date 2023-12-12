@@ -13,8 +13,9 @@ public class Jeu {
     private int numeroConfiguration;
     private Random generateur;
 
-    public Jeu(){        plateauDeJeu = new PlateauDeJeu();
-    }
+    public Jeu(){plateauDeJeu = new PlateauDeJeu();}
+    private Joueur premierATerminer;
+
 
     public void jouer(){
         int choice;
@@ -28,7 +29,7 @@ public class Jeu {
         System.out.println("[3]: Quitter");
         System.out.println("______________");
 
-        choice = Interaction.lireUnEntier(1,3);
+        choice = Interaction.lireUnEntier(1,4);
 
         switch (choice){
             case 1:
@@ -81,7 +82,9 @@ public class Jeu {
         while (!partieFinie());
         calculDesPoints();
         partieFinie();
-
+        gestionCouronne();
+        percevoirRessource();
+        choixPersonnages();
     };
     private void initialisation(){
         Pioche pioche = Configuration.nouvellePioche();
@@ -140,10 +143,23 @@ public class Jeu {
 
 };
     private void reinitialisationPersonnages(){};
-    private boolean partieFinie(){return true;};
     private void tourDeJeu(){
         choixPersonnages();
     };
+    private boolean partieFinie(){
+        boolean partieTerminee = false;
+        for (int i = 0; i < this.plateauDeJeu.getNombreJoueurs(); i++) {
+            if (this.plateauDeJeu.getJoueur(i).nbQuartiersDansCite() >= 7) {
+                System.out.println("\t\nFin de partie : " + this.plateauDeJeu.getJoueur(i).getNom() + " possède une cité complète. Bravo !\n");
+                if (!partieTerminee) {
+                    this.premierATerminer = this.plateauDeJeu.getJoueur(i);
+                    partieTerminee = true;
+                }
+            }
+        }
+        return partieTerminee;
+    }
+
     private void choixPersonnages(){
         System.out.println("Choix des personnages : ");
 
