@@ -18,12 +18,14 @@ public class Jeu {
         int choice;
 
         System.out.println("Bienvenue dans citadelle !");
-        System.out.println("Que souhaitez vous faire");
+        System.out.println("Que souhaitez-vous faire");
 
         System.out.println("______________");
-        System.out.println("[1]: Jouer une partie");
-        System.out.println("[2]: Voir les regles");
-        System.out.println("[3]: Quitter");
+        System.out.println("[1]: Jouer une partie solo");
+        System.out.println("[2]: Heberger une partie en ligne");
+        System.out.println("[3]: Rejoindre une partie");
+        System.out.println("[4]: Voir les règles");
+        System.out.println("[5]: Quitter");
         System.out.println("______________");
 
         choice = Interaction.lireUnEntier(1,4);
@@ -33,13 +35,19 @@ public class Jeu {
                 jouerPartie();
                 break;
             case 2:
+                hebergerPartie();
+                break;
+            case 3:
+                rejoindrePartie();
+                break;
+            case 4:
                 afficherLesRegles();
                 break;
             case 3:
                 quitterJeu();
                 break;
         }
-    };
+    }
 
 
     private void afficherLesRegles(){
@@ -80,6 +88,7 @@ public class Jeu {
         gestionCouronne();
     };
     private void initialisation(){
+        System.out.println("test");
         Pioche pioche = Configuration.nouvellePioche();
         String nom;
         this.generateur = new Random();
