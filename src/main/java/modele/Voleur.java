@@ -60,28 +60,36 @@ public class Voleur extends Personnage{
     }
 
     private boolean executePouvoir(int personnageNbChoisi, PlateauDeJeu plateau){
-        Personnage personnageChoisi = null;
+        Personnage personnageChoisi = plateau.getPersonnage(personnageNbChoisi);
 
-        personnageChoisi = plateau.getPersonnage(personnageNbChoisi);
+        if (personnageChoisi != null) {
+            if(personnageChoisi instanceof Voleur){
+                System.out.println("Vous ne pouvez pas vous voler vous même");
+                return true;
+            }else if(personnageChoisi.getRang() == 1){
+                System.out.println("Vous ne pouvez pas voler un personnage de rang 1");
+                return true;
+            }
 
-        if(personnageChoisi instanceof Voleur){
-            System.out.println("Vous ne pouvez pas vous voler vous même");
-            return true;
-        }else if(personnageChoisi.getRang() == 1){
-            System.out.println("Vous ne pouvez pas voler un personnage de rang 1");
-            return true;
-        }
-        else {
             Joueur joueurChoisi = personnageChoisi.getJoueur();
 
-            System.out.println("Vous venez de voler: "+ personnageChoisi.getNom());
+            if (joueurChoisi != null) {
+                System.out.println("Vous venez de voler: " + personnageChoisi.getNom());
 
-            personnageChoisi.setVole();
+                personnageChoisi.setVole();
 
-            this.getJoueur().ajouterPieces(joueurChoisi.nbPieces());
-            joueurChoisi.retirerPieces(joueurChoisi.nbPieces());
+                this.getJoueur().ajouterPieces(joueurChoisi.nbPieces());
+                joueurChoisi.retirerPieces(joueurChoisi.nbPieces());
 
-            return false;
+                return false;
+            } else {
+                System.out.println("Aucun personnage n'a encore été choisi par les autres joueurs, dommage !");
+            }
+        } else {
+            System.out.println("Personnage choisi est null.");
         }
+
+        return false;
     }
+
 }

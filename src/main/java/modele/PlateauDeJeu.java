@@ -18,6 +18,7 @@ public class PlateauDeJeu {
         nombrePersonnages = 0;
         nombreJoueurs = 0;
         pioche = new Pioche();
+        pioche = new Pioche();
     }
 
 
