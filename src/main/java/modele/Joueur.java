@@ -25,6 +25,10 @@ public class Joueur {
         this.monPersonnage = null;
     }
 
+    public void choisirPersonnage(Personnage personnage) {
+        this.monPersonnage = personnage;
+        personnage.setJoueur(this);
+    }
     public String getNom(){
         return this.nom;
     }

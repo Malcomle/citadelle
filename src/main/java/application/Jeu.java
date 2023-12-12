@@ -1,11 +1,11 @@
 package application;
 
 import controleur.Interaction;
-import modele.Joueur;
-import modele.Pioche;
-import modele.PlateauDeJeu;
-import modele.Quartier;
+import modele.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class Jeu {
@@ -13,7 +13,8 @@ public class Jeu {
     private int numeroConfiguration;
     private Random generateur;
 
-    public Jeu(){}
+    public Jeu(){        plateauDeJeu = new PlateauDeJeu();
+    }
 
     public void jouer(){
         int choice;
@@ -42,6 +43,7 @@ public class Jeu {
         }
     };
 
+
     private void afficherLesRegles(){
         //todo Affichage des règles
         System.out.println("Règles du jeu Citadelles:\n");
@@ -65,11 +67,21 @@ public class Jeu {
     }
 
     private void jouerPartie(){
-        System.out.println("C'est partie !");
         initialisation();
-        gestionCouronne();
-        percevoirRessource();
-        choixPersonnages();
+        System.out.println("C'est partie !");
+        int numeroTour = 1;
+        do {
+            System.out.println("Tour numéro "+numeroTour);
+            tourDeJeu();
+            gestionCouronne();
+            percevoirRessource();
+            System.out.println("Fin du tour");
+            numeroTour++;
+        }
+        while (!partieFinie());
+        calculDesPoints();
+        partieFinie();
+
     };
     private void initialisation(){
         Pioche pioche = Configuration.nouvellePioche();
@@ -129,29 +141,41 @@ public class Jeu {
 };
     private void reinitialisationPersonnages(){};
     private boolean partieFinie(){return true;};
-    private void tourDeJeu(){};
+    private void tourDeJeu(){
+        choixPersonnages();
+    };
     private void choixPersonnages(){
         System.out.println("Choix des personnages : ");
 
-        int faceCaché1 = generateur.nextInt(8);
-        int faceVisible = generateur.nextInt(8);
-        int faceVisible2 = generateur.nextInt(8);
+        ArrayList<Personnage> listePerso = new ArrayList<>(Arrays.asList(plateauDeJeu.getListePersonnages()));
+        int choix = 0;
+        String faceCache = plateauDeJeu.getPersonnage(generateur.nextInt(8)).getNom();
+        String faceVisible1 = plateauDeJeu.getPersonnage(generateur.nextInt(8)).getNom();
+        String faceVisible2 = plateauDeJeu.getPersonnage(generateur.nextInt(8)).getNom();
 
-        System.out.println("Le personnage `"+plateauDeJeu.getPersonnage(faceVisible).getNom()+"` est écarté face visible");
-        System.out.println("Le personnage `"+plateauDeJeu.getPersonnage(faceVisible2).getNom()+"` est écarté face visible");
+        System.out.println("Le personnage `"+faceVisible1+"` est écarté face visible");
+        System.out.println("Le personnage `"+faceVisible2+"` est écarté face visible");
         System.out.println("Le personnage est écarté face cachée");
 
         int couronne = 0;
-        for (int i = 0; i<4;i++) {
-            if(plateauDeJeu.getJoueur(i).getPossedeCouronne()){
-                couronne = i;
-                if(i == numeroConfiguration){
-                    System.out.println("Vous possedez la couronne");
-                }else{
-                    System.out.println(plateauDeJeu.getJoueur(i).getNom()+" possède la couronne");
+        for (int i = 0; i < plateauDeJeu.getNombreJoueurs(); i++) {
+            Joueur joueurActuel = plateauDeJeu.getJoueur(i);
+            System.out.println("Choisissez un personnage");
+
+            for (int j = 0; j < listePerso.size(); j++) {
+                String nomPerso = listePerso.get(j).getNom();
+                if (!nomPerso.equals(faceCache) && !nomPerso.equals(faceVisible1) && !nomPerso.equals(faceVisible2)) {
+                    System.out.println(j + " " + nomPerso);
                 }
             }
+            choix = Interaction.lireUnEntier(0, listePerso.size());
+            Personnage persoChoisi = listePerso.get(choix);
+            joueurActuel.choisirPersonnage(persoChoisi);
+            listePerso.remove(choix);
+
+            System.out.println(joueurActuel.getMonPersonnage().getNom());
         }
+
 
 
     };

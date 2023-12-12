@@ -8,6 +8,7 @@ public abstract class Personnage {
     private Joueur joueur; 
     private boolean assassine;
     private boolean vole;
+    private boolean selectionne = false;
 
     private PlateauDeJeu plateau;
 
@@ -30,7 +31,13 @@ public abstract class Personnage {
         this.assassine = false;
         this.vole = false;
     }
+    public boolean estSelectionne() {
+        return selectionne;
+    }
 
+    public void setSelectionne(boolean selectionne) {
+        this.selectionne = selectionne;
+    }
     public String getNom() {
         return nom;
     }

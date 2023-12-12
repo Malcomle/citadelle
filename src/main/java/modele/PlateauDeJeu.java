@@ -1,5 +1,7 @@
 package modele;
 
+import controleur.Interaction;
+
 import java.util.ArrayList;
 
 public class PlateauDeJeu {
@@ -33,10 +35,14 @@ public class PlateauDeJeu {
     }
 
     public Personnage getPersonnage(int i) {
-        if (i >= 0 && i < listePersonnages.length-1) {
+        if (i >= 0) {
             return listePersonnages[i];
         }
         return null;
+    }
+
+    public Personnage[] getListePersonnages() {
+        return listePersonnages;
     }
 
     public Joueur getJoueur(int i) {
