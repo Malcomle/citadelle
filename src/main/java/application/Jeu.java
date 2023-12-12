@@ -145,6 +145,32 @@ public class Jeu {
     private void reinitialisationPersonnages(){};
     private void tourDeJeu(){
         choixPersonnages();
+
+        for (int i=0;i<plateauDeJeu.getNombreJoueurs();i++) {
+            Joueur joueurActuel = this.plateauDeJeu.getJoueur(i);
+            if (!joueurActuel.getMonPersonnage().getAssassine()) {
+                System.out.print("C'est au tour de" + joueurActuel.getNom() + "de jouer avec " + joueurActuel.getMonPersonnage().getNom());
+
+                if (joueurActuel.getMonPersonnage().getVole()) {
+                    int nbPiecesJoueur = joueurActuel.nbPieces();
+                    for (int j = 0; j<this.plateauDeJeu.getNombreJoueurs(); j++) {
+                        if (this.plateauDeJeu.getJoueur(j).getMonPersonnage().getNom().equals("Voleur")) {
+                            this.plateauDeJeu.getJoueur(j).ajouterPieces(nbPiecesJoueur);
+                        }
+                    }
+                    joueurActuel.retirerPieces(nbPiecesJoueur);
+                }
+
+                joueurActuel.getMonPersonnage().percevoirRessourcesSpecifiques();
+                System.out.println("Voulez-vous utiliser votre pouvoir ? \n 1 - oui \n 2 - non");
+                int rep = Interaction.lireUnEntier();
+                if (rep == 1) {
+                    joueurActuel.getMonPersonnage().utiliserPouvoir();
+                }
+
+            }
+        }
+
     };
     private boolean partieFinie(){
         boolean partieTerminee = false;
