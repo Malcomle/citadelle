@@ -212,8 +212,12 @@ public class Jeu {
 
                         }
                         int choixQuartier = Interaction.lireUnEntier();
-                        if (choixQuartier < nbQuartiers) {
+                        if (choixQuartier < nbQuartiers && listQuartiers.get(choixQuartier).getCout() < joueurActuel.nbPieces()) {
                             joueurActuel.ajouterQuartierDansCite(listQuartiers.get(choixQuartier));
+                            joueurActuel.retirerPieces(listQuartiers.get(choixQuartier).getCout());
+                            System.out.println("vous avez construit votre quartier !");
+                        } else {
+                            System.out.println("Vous n'avez pas assez de pièce !");
                         }
 
                     }
