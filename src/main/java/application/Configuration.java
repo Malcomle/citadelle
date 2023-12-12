@@ -3,6 +3,7 @@ package application;
 import modele.*;
 
 import java.util.List;
+import java.util.Set;
 
 public class Configuration {
 
@@ -68,7 +69,7 @@ public class Configuration {
     };
 
     public static PlateauDeJeu configurationDeBase(Pioche pioche){
-        PlateauDeJeu plateau = new PlateauDeJeu();
+        PlateauDeJeu plateau = new PlateauDeJeu(false);
 
         plateau.ajouterPersonnage(new Assassin());
         plateau.ajouterPersonnage(new Condottiere());
@@ -89,8 +90,8 @@ public class Configuration {
         return plateau;
     };
 
-    public static PlateauDeJeu configurationOnline(Pioche pioche, List<String> nomsJoueursEnLigne){
-        PlateauDeJeu plateau = new PlateauDeJeu();
+    public static PlateauDeJeu configurationOnline(Pioche pioche, Server server){
+        PlateauDeJeu plateau = new PlateauDeJeu(true);
 
         plateau.ajouterPersonnage(new Assassin());
         plateau.ajouterPersonnage(new Condottiere());
@@ -101,8 +102,9 @@ public class Configuration {
         plateau.ajouterPersonnage(new Roi());
         plateau.ajouterPersonnage(new Voleur());
 
-        for (String nomJoueur : nomsJoueursEnLigne) {
-            plateau.ajouterJoueur(new Joueur(nomJoueur));
+        Set<String> clients = server.getClients();
+        for (String client : clients) {
+            plateau.ajouterJoueur(new Joueur(client));
         }
 
         plateau.setPioche(pioche);

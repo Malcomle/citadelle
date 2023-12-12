@@ -21,7 +21,7 @@ public class TestMagicienne {
 	
 	public void test1() {
 		System.out.println("TEST DU CONSTRUCTEUR");
-		PlateauDeJeu plateau = new PlateauDeJeu();
+		PlateauDeJeu plateau = new PlateauDeJeu(false);
 		Roi roi = new Roi();
 		plateau.ajouterPersonnage(roi);
 		Assassin assassin = new Assassin();
@@ -37,7 +37,7 @@ public class TestMagicienne {
 	}
 	public void test2() {
 		System.out.println("TEST DU POUVOIR DE LA MAGICIENNE");
-		PlateauDeJeu plateau = new PlateauDeJeu();
+		PlateauDeJeu plateau = new PlateauDeJeu(false);
 		
 		// cr�ation de quatre personnages
 		Roi roi = new Roi();

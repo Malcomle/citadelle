@@ -18,7 +18,7 @@ public class TestPlateauDeJeu {
 	
 	public void test1() {
 		System.out.println("TEST DU CONSTRUCTEUR");
-		PlateauDeJeu plateau = new PlateauDeJeu();
+		PlateauDeJeu plateau = new PlateauDeJeu(false);
 		Test.test(plateau.getNombreJoueurs()== 0,"test du nombre de joueurs");
 		Test.test(plateau.getNombrePersonnages()== 0,"test du nombre de personnages");
 		Test.test(plateau.getPioche()!= null && 
@@ -27,25 +27,25 @@ public class TestPlateauDeJeu {
 	}
 	public void test2() {
 		System.out.println("TEST DE L'AJOUT D'UN JOUEUR");
-		PlateauDeJeu plateau = new PlateauDeJeu();
+		PlateauDeJeu plateau = new PlateauDeJeu(false);
 		Joueur joueur = new Joueur("Billy");
 		plateau.ajouterJoueur(joueur);
 		Test.test(plateau.getNombreJoueurs()== 1,"nombre de joueurs");
 		Test.test(plateau.getJoueur(0)== joueur,
-				"récupération de ce joueur depuis le tableau");
+				"rï¿½cupï¿½ration de ce joueur depuis le tableau");
 	}
 	public void test3() {
 		System.out.println("TEST DE L'AJOUT D'UN PERSONNAGE");
-		PlateauDeJeu plateau = new PlateauDeJeu();
+		PlateauDeJeu plateau = new PlateauDeJeu(false);
 		Roi roi = new Roi();
 		plateau.ajouterPersonnage(roi);
 		Test.test(plateau.getNombrePersonnages()== 1,"nombre de joueurs");
 		Test.test(plateau.getPersonnage(0)== roi,
-				"récupération du personnage depuis le tableau");
+				"rï¿½cupï¿½ration du personnage depuis le tableau");
 	}
 	public void test4() {
 		System.out.println("TEST DE L'ASSOCIATION DU PLATEAU AU PERSONNAGE");
-		PlateauDeJeu plateau = new PlateauDeJeu();
+		PlateauDeJeu plateau = new PlateauDeJeu(false);
 		Roi roi = new Roi();
 		plateau.ajouterPersonnage(roi);
 		Test.test(roi.getPlateau()==plateau,

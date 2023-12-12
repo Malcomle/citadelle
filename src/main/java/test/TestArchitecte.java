@@ -30,7 +30,7 @@ public class TestArchitecte {
 	public void test2(){
 		System.out.println("TEST DE L'UTILISATION DU POUVOIR");
 		// on crée un plateau et on ajoute des cartes Quartier à la pioche:		
-		PlateauDeJeu plateau = new PlateauDeJeu();
+		PlateauDeJeu plateau = new PlateauDeJeu(false);
 		Quartier quartier1 = new Quartier("temple",Quartier.TYPE_QUARTIERS[0],1);
 		Quartier quartier2 = new Quartier("prison",Quartier.TYPE_QUARTIERS[1],2);
 		Quartier quartier3 = new Quartier("palais",Quartier.TYPE_QUARTIERS[2],5);

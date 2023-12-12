@@ -3,6 +3,8 @@ package modele;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Collection;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Server {
@@ -30,8 +32,12 @@ public class Server {
         Message msg = new Message(type, contenu, destinataire);
         String m = JsonUtil.toJson(msg);
         for (ClientHandler client : clients.values()) {
-            client.sendMessage(m);
+            client.sendMessage(contenu);
         }
+    }
+
+    public Set<String> getClients(){
+        return clients.keySet();
     }
 
     public ClientHandler getClientHandler(String clientName) {

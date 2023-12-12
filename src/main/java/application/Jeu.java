@@ -10,8 +10,12 @@ public class Jeu {
     private int numeroConfiguration;
     private Random generateur;
 
-    public Jeu(){plateauDeJeu = new PlateauDeJeu();}
+    public Jeu(){plateauDeJeu = new PlateauDeJeu(false);}
+
+    public boolean estEnLigne;
     private Joueur premierATerminer;
+    private Server server = new Server();
+
 
 
     public void jouer(){
@@ -43,12 +47,75 @@ public class Jeu {
             case 4:
                 afficherLesRegles();
                 break;
-            case 3:
+            case 5:
                 quitterJeu();
                 break;
         }
     }
 
+    private void hebergerPartie() {
+        int port = 6666;
+
+        estEnLigne = !estEnLigne;
+
+        new Thread(() -> {
+            try {
+                server.start(port);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        Client hostClient = new Client();
+        String hostName = "hote";
+
+        try {
+            new Thread(() -> {
+                try {
+                    hostClient.startConnection("localhost", port, hostName);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }).start();
+
+            Thread.sleep(1000);
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        Scanner scanner = new Scanner(System.in);
+        scanner.nextLine();
+        plateauDeJeu.setJeuEnLigne();
+        jouerPartie();
+    }
+
+    private void rejoindrePartie() {
+        Client client = new Client();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Entrez votre nom de joueur : ");
+        String nomJoueur = scanner.nextLine();
+
+        System.out.println("Entrez l'adresse IP du serveur pour rejoindre une partie : ");
+        String adresseIP = scanner.nextLine();
+
+        int port = 6666;
+        System.out.println("Connexion au serveur " + adresseIP + " sur le port " + port);
+
+        try {
+            new Thread(() -> {
+                try {
+                    client.startConnection("localhost", port, nomJoueur);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }).start();
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void afficherLesRegles(){
         //todo Affichage des règles
@@ -74,10 +141,20 @@ public class Jeu {
 
     private void jouerPartie(){
         initialisation();
-        System.out.println("C'est partie !");
+
+        if (estEnLigne) {
+            server.sendMessageToAll("server", "C'est partie !", "Jeu: ");
+        } else {
+            System.out.println("C'est partie !");
+        }
+
         int numeroTour = 1;
         do {
-            System.out.println("Tour numéro "+numeroTour);
+            if (estEnLigne) {
+                server.sendMessageToAll("server", "Tour numéro "+numeroTour, "Jeu: ");
+            } else {
+                System.out.println("Tour numéro "+numeroTour);
+            }
             tourDeJeu();
             gestionCouronne();
             System.out.println("Fin du tour");
@@ -88,12 +165,11 @@ public class Jeu {
         gestionCouronne();
     };
     private void initialisation(){
-        System.out.println("test");
         Pioche pioche = Configuration.nouvellePioche();
         String nom;
         this.generateur = new Random();
 
-        this.plateauDeJeu = Configuration.configurationDeBase(pioche);
+        this.plateauDeJeu = this.plateauDeJeu.getJeuEnLigne() ? Configuration.configurationOnline(pioche, server) : Configuration.configurationDeBase(pioche);
 
         int r = this.generateur.nextInt(4);
         this.numeroConfiguration = this.generateur.nextInt(4);

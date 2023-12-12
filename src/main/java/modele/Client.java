@@ -18,6 +18,8 @@ public class Client {
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
         System.out.println("Connexion établie.");
+        System.out.println("Le host de la partie doit appuyer sur entrée pour lancer la partie");
+
         this.nomJoueur = nomJoueur;
         sendMessage(nomJoueur);
 
@@ -29,8 +31,7 @@ public class Client {
         try {
             String messageDuServeur;
             while ((messageDuServeur = in.readLine()) != null) {
-                System.out.println("Message du serveur reçu : " + messageDuServeur);
-                // Traiter les messages reçus ici
+                System.out.println(messageDuServeur);
             }
         } catch (IOException e) {
             System.out.println("Erreur lors de la réception du message du serveur.");

@@ -20,7 +20,7 @@ public class TestCondottiere {
 	
 	public void test1() {
 		System.out.println("TEST DU CONSTRUCTEUR");
-		PlateauDeJeu plateau = new PlateauDeJeu();
+		PlateauDeJeu plateau = new PlateauDeJeu(false);
 		Condottiere condottiere = new Condottiere();
 		plateau.ajouterPersonnage(condottiere);
 		Assassin assassin = new Assassin();
@@ -36,7 +36,7 @@ public class TestCondottiere {
 	
 	public void test2() {
 		System.out.println("TEST DU POUVOIR DU CONDOTTIERE");
-		PlateauDeJeu plateau = new PlateauDeJeu();
+		PlateauDeJeu plateau = new PlateauDeJeu(false);
 		
 		// création de quatre personnages
 		Roi roi = new Roi();

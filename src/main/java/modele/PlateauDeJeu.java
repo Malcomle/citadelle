@@ -12,13 +12,24 @@ public class PlateauDeJeu {
     private int nombrePersonnages;
     private int nombreJoueurs;
 
-    public PlateauDeJeu() {
+    private boolean jeuEnLigne;
+
+    public boolean getJeuEnLigne(){
+        return jeuEnLigne;
+    }
+
+    public void setJeuEnLigne(){
+        jeuEnLigne = !jeuEnLigne;
+    }
+
+    public PlateauDeJeu(boolean estEnLigne) {
         listePersonnages = new Personnage[8];
         listeJoueurs = new Joueur[8];
         nombrePersonnages = 0;
         nombreJoueurs = 0;
         pioche = new Pioche();
         pioche = new Pioche();
+        this.jeuEnLigne = estEnLigne;
     }
 
 

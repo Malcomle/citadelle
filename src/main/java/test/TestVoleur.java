@@ -16,7 +16,7 @@ public class TestVoleur {
 	
 	public void test1() {
 		System.out.println("TEST DU CONSTRUCTEUR");
-		PlateauDeJeu plateau = new PlateauDeJeu();
+		PlateauDeJeu plateau = new PlateauDeJeu(false);
 		Roi roi = new Roi();
 		plateau.ajouterPersonnage(roi);
 		Assassin assassin = new Assassin();
@@ -32,7 +32,7 @@ public class TestVoleur {
 	}
 	public void test2() {
 		System.out.println("TEST DU VOL DU ROI");
-		PlateauDeJeu plateau = new PlateauDeJeu();
+		PlateauDeJeu plateau = new PlateauDeJeu(false);
 		// cr�ation de trois personnages
 		Roi roi = new Roi();
 		plateau.ajouterPersonnage(roi);
