@@ -2,6 +2,8 @@ package application;
 
 import modele.*;
 
+import java.util.List;
+
 public class Configuration {
 
     public static Pioche nouvellePioche(){
@@ -51,4 +53,24 @@ public class Configuration {
         return plateau;
     };
 
+    public static PlateauDeJeu configurationOnline(Pioche pioche, List<String> nomsJoueursEnLigne){
+        PlateauDeJeu plateau = new PlateauDeJeu();
+
+        plateau.ajouterPersonnage(new Assassin());
+        plateau.ajouterPersonnage(new Condottiere());
+        plateau.ajouterPersonnage(new Architecte());
+        plateau.ajouterPersonnage(new Eveque());
+        plateau.ajouterPersonnage(new Magicienne());
+        plateau.ajouterPersonnage(new Marchande());
+        plateau.ajouterPersonnage(new Roi());
+        plateau.ajouterPersonnage(new Voleur());
+
+        for (String nomJoueur : nomsJoueursEnLigne) {
+            plateau.ajouterJoueur(new Joueur(nomJoueur));
+        }
+
+        plateau.setPioche(pioche);
+
+        return plateau;
+    };
 }

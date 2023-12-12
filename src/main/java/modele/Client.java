@@ -2,22 +2,38 @@ package modele;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class Client {
     private Socket socket;
     private PrintWriter out;
     private BufferedReader in;
+    private String nomJoueur;
 
-    public void startConnection(String ip, int port, String nomJoueur) {
+    public void startConnection(String ip, int port, String nomJoueur) throws IOException {
+        System.out.println("Tentative de connexion au serveur...");
+
+        socket = new Socket(ip, port);
+        out = new PrintWriter(socket.getOutputStream(), true);
+        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+        System.out.println("Connexion établie.");
+        this.nomJoueur = nomJoueur;
+        sendMessage(nomJoueur);
+
+        // Écouter les messages du serveur dans un nouveau thread
+        new Thread(this::listenForServerMessages).start();
+    }
+
+    private void listenForServerMessages() {
         try {
-            socket = new Socket(ip, port);
-            out = new PrintWriter(socket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-            sendMessage(nomJoueur);
-
-            listenForServerMessages();
+            String messageDuServeur;
+            while ((messageDuServeur = in.readLine()) != null) {
+                System.out.println("Message du serveur reçu : " + messageDuServeur);
+                // Traiter les messages reçus ici
+            }
         } catch (IOException e) {
+            System.out.println("Erreur lors de la réception du message du serveur.");
             e.printStackTrace();
         }
     }
@@ -26,28 +42,10 @@ public class Client {
         out.println(message);
     }
 
-    private void listenForServerMessages() {
-        new Thread(() -> {
-            try {
-                String messageFromServer;
-                while ((messageFromServer = in.readLine()) != null) {
-                    System.out.println("Message du serveur : " + messageFromServer);
-                    // Traiter le message reçu ici
-                }
-            } catch (IOException e) {
-                System.out.println("Erreur lors de la lecture des messages du serveur. Connexion peut-être perdue.");
-                e.printStackTrace();
-            }
-        }).start();
-    }
-
-    public void stopConnection() {
-        try {
-            in.close();
-            out.close();
-            socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void stopConnection() throws IOException {
+        in.close();
+        out.close();
+        socket.close();
+        System.out.println("Connexion fermée.");
     }
 }
