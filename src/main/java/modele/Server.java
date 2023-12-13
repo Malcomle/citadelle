@@ -54,7 +54,7 @@ public class Server {
         Message msg = new Message(type, contenu, destinataire);
         String m = JsonUtil.toJson(msg);
         for (ClientHandler client : clients.values()) {
-            client.sendMessage("DEBUG: "+msg.getContenu());
+            client.sendMessage(msg.getContenu());
         }
     }
 
@@ -64,7 +64,7 @@ public class Server {
 
         for (Map.Entry<String, ClientHandler> clientEntry : clients.entrySet()) {
             if (!clientEntry.getKey().equals(destinataire)) {
-                clientEntry.getValue().sendMessage("DEBUG: "+contenu);
+                clientEntry.getValue().sendMessage(contenu);
             }
         }
     }
@@ -75,7 +75,7 @@ public class Server {
         if (clientHandler != null) {
             Message message = new Message(type, contenu, destinataire);
             String messageJson = JsonUtil.toJson(message);
-            clientHandler.sendMessage("DEBUG: "+ contenu);
+            clientHandler.sendMessage(contenu);
         }
     }
 
