@@ -112,7 +112,7 @@ public class Jeu {
         try {
             new Thread(() -> {
                 try {
-                    client.startConnection("localhost", port, nomJoueur);
+                    client.startConnection(adresseIP, port, nomJoueur);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
