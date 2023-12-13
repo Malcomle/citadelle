@@ -4,56 +4,49 @@ import modele.Server;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 public class InteractionOnline {
 
+    public static int lireUnEntier(Server server, boolean estEnLigne, String to, String question) {
+        if(estEnLigne) {
+            do {
+                try {
+                    CompletableFuture<String> futureResponse = server.askPlayer(to, question);
+                    String response = futureResponse.get();
+                    return Integer.parseInt(response);
 
-    public static int lireUnEntier(Server server) {
-        int i = 0;
-        boolean continu = true;
-        do {
-            try {
-                server.sendMessageToAll("server", "Votre choix", "Jeu: ");
-
-                Scanner sc = new Scanner(System.in);
-                i = sc.nextInt();
-                continu = false;
-
-                return i;
-            } catch (InputMismatchException e) {
-                server.sendMessageToAll("server", "Entrez une valeur correct", "Jeu: ");
-
-            }
-        } while(continu);
-        return i;
+                } catch (InterruptedException | ExecutionException | NumberFormatException f) {
+                    server.sendMessageToOne("server", "Entrez une valeur correct", to);
+                }
+            }while (true);
+        }else{
+            return Interaction.lireUnEntier();
+        }
     }
 
     // renvoie un entier lu au clavier compris dans l'intervalle
     //     [borneMin, borneMax[
-    public static int lireUnEntier(int borneMin, int borneMax, Server server) {
-        int i = 0;
-        boolean continu = true;
-        do {
-            try {
-                server.sendMessageToAll("server", "Votre choix", "Jeu: ");
-
-                Scanner sc = new Scanner(System.in);
-                i = sc.nextInt();
-
-                if (i >= borneMin && i < borneMax) {
-                    continu = false;
-                } else {
-                    server.sendMessageToAll("server", "Veuillez rentrer un chiffre entre " + borneMin + " et " + (borneMax - 1) + " : ", "Jeu: ");
+    public static int lireUnEntier(Server server, boolean estEnLigne, String to, String question, int borneMin, int borneMax) {
+        if(estEnLigne) {
+            do {
+                try {
+                    CompletableFuture<String> futureResponse = server.askPlayer(to, question);
+                    String response = futureResponse.get();
+                    int res = Integer.parseInt(response);
+                    if(res >= borneMin || res < borneMax){
+                        return res;
+                    }
+                } catch (InterruptedException | ExecutionException  | NumberFormatException f) {
+                    server.sendMessageToOne("server", "Entrez une valeur correct", to);
                 }
-
-            } catch (InputMismatchException e) {
-                server.sendMessageToAll("server", "Veuillez entrer une valeur correct", "Jeu: ");
-            }
-        } while(continu);
-        return i;
+            }while (true);
+        }else{
+            return Interaction.lireUnEntier();
+        }
     }
 
-    // lit les r�ponses "oui", "non", "o" ou "n" et renvoie un bool�en
     public static boolean lireOuiOuNon(Server server) {
         String reponse;
 
@@ -75,5 +68,31 @@ public class InteractionOnline {
         Scanner sc = new Scanner(System.in);
         String retour = sc.nextLine();
         return retour;
+    }
+
+    public static void generalMessage(Server server, boolean estEnLigne, String contenu){
+        if (estEnLigne) {
+            server.sendMessageToAll("server", contenu, "Jeu: ");
+        } else {
+            System.out.println(contenu);
+        }
+    }
+
+    public static void targetedMessage(Server server, boolean estEnLigne, String contenu, String other, String destinataire){
+        if (estEnLigne) {
+            server.sendMessageToOne("server", contenu, destinataire);
+
+            server.sendMessageToAllExcept("server", other, destinataire);
+        } else {
+            System.out.println(contenu);
+        }
+    }
+
+    public static void messageToOne(Server server, boolean estEnLigne, String contenu, String destinataire){
+        if (estEnLigne) {
+            server.sendMessageToOne("server", contenu, destinataire);
+        } else {
+            System.out.println(contenu);
+        }
     }
 }

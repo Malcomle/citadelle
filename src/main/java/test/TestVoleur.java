@@ -1,11 +1,6 @@
 package test;
 
-import modele.Assassin;
-import modele.Roi;
-import modele.Voleur;
-
-import modele.Joueur;
-import modele.PlateauDeJeu;
+import modele.*;
 
 public class TestVoleur {
 	public static void main(String[] args) {
@@ -32,6 +27,8 @@ public class TestVoleur {
 	}
 	public void test2() {
 		System.out.println("TEST DU VOL DU ROI");
+		Server server = new Server();
+		boolean estEnLigne = false;
 		PlateauDeJeu plateau = new PlateauDeJeu(false);
 		// cr�ation de trois personnages
 		Roi roi = new Roi();
@@ -57,7 +54,7 @@ public class TestVoleur {
 		// on utilise le pouvoir du voleur
 		// NB: seul le roi peut �tre vol� dans cette situation
 		roi.ajouterPieces();
-		voleur.utiliserPouvoir();
+		voleur.utiliserPouvoir(server, estEnLigne);
 		
 		// tests:
 		Test.test(roi.getVole(),"le roi est bien vol�");

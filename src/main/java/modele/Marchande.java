@@ -1,5 +1,7 @@
 package modele;
 
+import controleur.InteractionOnline;
+
 import java.util.InputMismatchException;
 
 public class Marchande extends Personnage{
@@ -7,16 +9,18 @@ public class Marchande extends Personnage{
     public Marchande() {super("Marchande", 6, Caracteristiques.MARCHANDE);}
 
     @Override
-    public void utiliserPouvoir() {
-                if (this.getJoueur() != null) {
-                    this.getJoueur().ajouterPieces(1);
-                    System.out.println("Ajouter 1 pièce");
-                }
+    public void utiliserPouvoir(Server server, boolean estEnLigne) {
+        if (this.getJoueur() != null) {
+            this.getJoueur().ajouterPieces(1);
+            System.out.println("Ajouter 1 pièce");
+            InteractionOnline.targetedMessage(server,estEnLigne, "Vous avez obtenue une pièce supplémentaire.", "La marchande a obtenue une pièce supplémentaire", this.getJoueur().getNom());
+
+        }
     }
 
     @Override
     public void utiliserPouvoirAvatar() {
-        utiliserPouvoir();
+        //utiliserPouvoir();
     }
 
     @Override

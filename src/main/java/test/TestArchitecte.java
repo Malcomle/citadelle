@@ -1,11 +1,6 @@
 package test;
 
-import modele.Caracteristiques;
-import modele.Architecte;
-import modele.Joueur;
-import modele.Pioche;
-import modele.PlateauDeJeu;
-import modele.Quartier;
+import modele.*;
 
 public class TestArchitecte {
 
@@ -46,9 +41,12 @@ public class TestArchitecte {
 		plateau.ajouterJoueur(joueur);
 		architecte.setJoueur(joueur);
 
+		Server server = new Server();
+		boolean estEnLigne = false;
+
 		Test.test(architecte.getJoueur().nbQuartiersDansMain() == 0,
 				"test du nombre de cartes dans la main avant l'utilisation du pouvoir");			
-		architecte.utiliserPouvoir();
+		architecte.utiliserPouvoir(server, estEnLigne);
 		Test.test(architecte.getJoueur().nbQuartiersDansMain() == 2,
 				"test du nombre de cartes dans la main après l'utilisation du pouvoir");
 			

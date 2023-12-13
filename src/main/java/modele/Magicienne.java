@@ -1,6 +1,7 @@
 package modele;
 
 import controleur.Interaction;
+import controleur.InteractionOnline;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -10,25 +11,28 @@ public class Magicienne extends Personnage{
     public Magicienne() {super("Magicien", 3, Caracteristiques.MAGICIENNE);}
 
     @Override
-    public void utiliserPouvoir() {
+    public void utiliserPouvoir(Server server, boolean estEnLigne) {
         PlateauDeJeu plateau = this.getPlateau();
         int nbJoueur = plateau.getNombreJoueurs();
         int joueurNbChoisi;
         Joueur joueurChoisi;
 
-        System.out.println("Voulez-vous échanger toutes vos cartes avec celles d’un autre joueur ?");
+        InteractionOnline.messageToOne(server,estEnLigne, "Voulez-vous échanger toutes vos cartes avec celles d’un autre joueur ?", this.getJoueur().getNom());
+
         if (Interaction.lireOuiOuNon()) {
             for (int i = 0; i < nbJoueur; i++) {
                 System.out.println((i + 1) + ": " + plateau.getJoueur(i).getNom() + " | " + plateau.getJoueur(i).nbQuartiersDansMain() + " cartes");
             }
 
-            System.out.println("Avec qui souhaitez-vous échanger vos cartes ?");
-            joueurNbChoisi = Interaction.lireUnEntier(1, plateau.getNombreJoueurs() + 1);
+            InteractionOnline.messageToOne(server,estEnLigne, "Avec qui souhaitez-vous échanger vos cartes ?", this.getJoueur().getNom());
+
+            joueurNbChoisi = InteractionOnline.lireUnEntier(server,estEnLigne,this.getJoueur().getNom(),"VOTRE CHOIX:",1, plateau.getNombreJoueurs() + 1);
 
             joueurChoisi = plateau.getJoueur(joueurNbChoisi - 1);
 
             if (joueurChoisi.getMonPersonnage() instanceof Magicienne) {
-                System.out.println("Vous ne pouvez pas échanger les cartes avec vous-même.");
+                InteractionOnline.messageToOne(server,estEnLigne, "Vous ne pouvez pas échanger les cartes avec vous-même.", this.getJoueur().getNom());
+
             } else {
                 ArrayList<Quartier> mainJoueur = joueurChoisi.getMain();
                 ArrayList<Quartier> mainMagicien = this.getJoueur().getMain();
@@ -39,12 +43,13 @@ public class Magicienne extends Personnage{
                 mainMagicien.clear();
                 mainMagicien.addAll(temp);
 
-                System.out.println("Échange de cartes effectué.");
+                InteractionOnline.targetedMessage(server,estEnLigne, "Vous avez échangé vos cartes effectué.", "La magicienne viens d'echanger ses cartes", this.getJoueur().getNom());
+
             }
         } else if (this.getJoueur().nbQuartiersDansMain() != 0) {
+            InteractionOnline.messageToOne(server,estEnLigne, "Combien de cartes souhaitez-vous remplacer ?", this.getJoueur().getNom());
 
-            System.out.println("Combien de cartes souhaitez-vous remplacer ?");
-            int nb = Interaction.lireUnEntier(0, this.getJoueur().nbQuartiersDansMain());
+            int nb = InteractionOnline.lireUnEntier(server,estEnLigne,this.getJoueur().getNom(),"VOTRE CHOIX:",0, this.getJoueur().nbQuartiersDansMain());
 
             if (nb != 0) {
                 if (nb == this.getJoueur().nbQuartiersDansMain()) {
@@ -60,11 +65,13 @@ public class Magicienne extends Personnage{
                         this.getJoueur().ajouterQuartierDansMain(quartierAjoute);
                     }
 
-                    System.out.println("Échange de cartes effectué.");
+                    InteractionOnline.targetedMessage(server,estEnLigne, "Vous avez échangé vos cartes effectué.", "La magicienne viens d'echanger ses cartes", this.getJoueur().getNom());
+
                 } else {
                     ArrayList<Quartier> mainMagicien = new ArrayList<Quartier>(this.getJoueur().getMain());
 
-                    System.out.println("Voici les cartes de votre main :");
+                    InteractionOnline.messageToOne(server,estEnLigne, "Voici vos cartes", this.getJoueur().getNom());
+
                     for (int i = 0; i < mainMagicien.size(); i++) {
                         Quartier quartier = mainMagicien.get(i);
                         System.out.println((i + 1) + ": " + quartier.getNom());
@@ -73,8 +80,9 @@ public class Magicienne extends Personnage{
                     for (int i = 0; i < nb; i++) {
                         int choixCarte;
                         do {
-                            System.out.print("Choisissez une carte à retirer (1-" + mainMagicien.size() + ") : ");
-                            choixCarte = Interaction.lireUnEntier(1, mainMagicien.size() + 1);
+                            InteractionOnline.messageToOne(server,estEnLigne, "Choisissez une carte à retirer (1-" + mainMagicien.size() + ") : ", this.getJoueur().getNom());
+
+                            choixCarte = InteractionOnline.lireUnEntier(server,estEnLigne,this.getJoueur().getNom(), "VOTRE CHOIX:",1, mainMagicien.size() + 1);
                         } while (choixCarte < 1 || choixCarte > mainMagicien.size());
 
                         Quartier carteRetiree = mainMagicien.remove(choixCarte - 1);
@@ -90,7 +98,8 @@ public class Magicienne extends Personnage{
 
                     this.getJoueur().getMain().addAll(mainMagicien);
 
-                    System.out.println("Échange de cartes effectué.");
+                    InteractionOnline.targetedMessage(server,estEnLigne, "Vous avez échangé vos cartes effectué.", "La magicienne viens d'echanger ses cartes", this.getJoueur().getNom());
+
                 }
             }
         }
@@ -118,7 +127,7 @@ public class Magicienne extends Personnage{
                 mainJoueur.addAll(mainMagicien);
                 mainMagicien.clear();
                 mainMagicien.addAll(temp);
-                System.out.println(this.getNom() + " a échangé des cartes avec le joueur " + (joueurNbChoisi + 1));
+                System.out.println(this.getJoueur() + " a échangé des cartes avec le joueur " + (joueurNbChoisi + 1));
 
             } else {
                 int nbCartesAMelanger = 1 + rand.nextInt(this.getJoueur().nbQuartiersDansMain());
@@ -127,16 +136,16 @@ public class Magicienne extends Personnage{
                     int indexCarte = rand.nextInt(mainMagicien.size());
                     Quartier retireCarte = mainMagicien.remove(indexCarte);
                     this.getPlateau().getPioche().ajouter(retireCarte);
-                    System.out.println(this.getNom() + " a retiré une carte de sa main.");
+                    System.out.println(this.getJoueur() + " a retiré une carte de sa main.");
                 }
 
                 for (int i = 0; i < nbCartesAMelanger; i++) {
                     Quartier quartierAjoute = this.getPlateau().getPioche().piocher();
                     mainMagicien.add(quartierAjoute);
-                    System.out.println(this.getNom() + " a ajouté une nouvelle carte à sa main.");
+                    System.out.println(this.getJoueur() + " a ajouté une nouvelle carte à sa main.");
                 }
 
-                System.out.println(this.getNom() + " a terminé l'échange de " + nbCartesAMelanger + " cartes.");
+                System.out.println(this.getJoueur() + " a terminé l'échange de " + nbCartesAMelanger + " cartes.");
             }
         }
 

@@ -3,6 +3,7 @@ package test;
 import modele.Assassin;
 import modele.PlateauDeJeu;
 import modele.Roi;
+import modele.Server;
 
 public class TestAssassin {
 	public static void main(String[] args) {
@@ -28,13 +29,15 @@ public class TestAssassin {
 		System.out.println("TEST DE L'ASSASSINAT DU ROI");
 		PlateauDeJeu plateau = new PlateauDeJeu(false);
 		Roi roi = new Roi();
+		Server server = new Server();
+		boolean estEnLigne = false;
 		plateau.ajouterPersonnage(roi);
 		Assassin assassin = new Assassin();
 		plateau.ajouterPersonnage(assassin);
 		
 		// on utilise le pouvoir de l'assassin
 		// NB: seul le roi peut �tre assassin� dans cette situation
-		assassin.utiliserPouvoir();
+		assassin.utiliserPouvoir(server, estEnLigne);
 		Test.test(roi.getAssassine(),"le roi est assassin�");
 	}
 	

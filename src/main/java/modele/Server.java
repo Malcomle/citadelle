@@ -100,6 +100,4 @@ public class Server {
             responseFutures.remove(playerId.playerId);
         }
     }
-
-
 }

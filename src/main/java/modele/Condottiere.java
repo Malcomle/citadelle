@@ -1,5 +1,6 @@
 package modele;
 import controleur.Interaction;
+import controleur.InteractionOnline;
 
 import java.util.Random;
 
@@ -10,31 +11,31 @@ public class Condottiere extends Personnage {
     }
 
     @Override
-    public void utiliserPouvoir() {
+    public void utiliserPouvoir(Server server, boolean estEnLigne) {
         PlateauDeJeu plateau = this.getPlateau();
-        System.out.println("Choisissez le joueur cible (entrez un numéro):");
+
+        InteractionOnline.messageToOne(server,estEnLigne, "Choisissez le joueur cible (entrez un numéro):", this.getJoueur().getNom());
 
         for (int i = 0; i < plateau.getNombreJoueurs(); i++) {
             Joueur joueur = plateau.getJoueur(i);
             if (!joueur.equals(this.getJoueur())) {
-                System.out.println(i + ": " + joueur.getNom());
+                InteractionOnline.messageToOne(server,estEnLigne, i + ": " + joueur.getNom(), this.getJoueur().getNom());
             }
         }
 
-        int choixJoueur = Interaction.lireUnEntier(0, plateau.getNombreJoueurs());
+        int choixJoueur = InteractionOnline.lireUnEntier(server, estEnLigne,this.getJoueur().getNom(),"VOTRE CHOIX: ",0, plateau.getNombreJoueurs());
         Joueur cible = plateau.getJoueur(choixJoueur);
         if (cible.equals(this.getJoueur())) {
-            System.out.println("Le Condottiere ne peut pas cibler sa propre cité.");
+            InteractionOnline.messageToOne(server,estEnLigne, "Le Condottiere ne peut pas cibler sa propre cité.", this.getJoueur().getNom());
             return;
         }
 
-
-        System.out.println("Choisissez le quartier à détruire dans la cité de " + cible.getNom() + ":");
+        InteractionOnline.targetedMessage(server,estEnLigne, "Choisissez le quartier à détruire dans la cité de " + cible.getNom() + ":", "La condottiere cherche à detruire un quartier", this.getJoueur().getNom());
 
         Quartier[] cite = cible.getCite();
         for (int i = 0; i < cite.length; i++) {
             if (cite[i] != null) {
-                System.out.println(i + ": " + cite[i].getNom() + " (Coût: " + cite[i].getCout() + ")");
+                InteractionOnline.messageToOne(server,estEnLigne, i + ": " + cite[i].getNom() + " (Coût: " + cite[i].getCout() + ")", this.getJoueur().getNom());
             }
         }
 
@@ -46,12 +47,13 @@ public class Condottiere extends Personnage {
             if (this.getJoueur().nbPieces() >= coutDestruction) {
                 this.getJoueur().retirerPieces(coutDestruction);
                 cible.retirerQuartierDansCite(quartierACibler.getNom());
-                System.out.println("Le Condottiere a détruit le quartier " + quartierACibler.getNom() + " en payant " + coutDestruction + " pièce(s) d'or.");
+                InteractionOnline.generalMessage(server,estEnLigne,"Le Condottiere a détruit le quartier " + quartierACibler.getNom() + " en payant " + coutDestruction + " pièce(s) d'or.");
             } else {
-                System.out.println("Pas assez de pièces pour détruire ce quartier.");
+                InteractionOnline.targetedMessage(server,estEnLigne, "Pas assez de pièces pour détruire ce quartier.", "La condottiere choisit de ne pas detruire de quartier", this.getJoueur().getNom());
+
             }
         } else {
-            System.out.println("Aucun quartier sélectionné pour la destruction.");
+            InteractionOnline.targetedMessage(server,estEnLigne, "Aucun quartier sélectionné pour la destruction.", "La condottiere choisit de ne pas detruire de quartier", this.getJoueur().getNom());
         }
     }
 

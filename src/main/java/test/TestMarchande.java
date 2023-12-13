@@ -1,9 +1,6 @@
 package test;
 
-import modele.Marchande;
-import modele.Caracteristiques;
-import modele.Joueur;
-import modele.Quartier;
+import modele.*;
 
 public class TestMarchande {
 
@@ -19,7 +16,7 @@ public class TestMarchande {
 		Test.test(Marchande.getNom().equals("Marchande"),"test du nom du personnage");
 		Test.test(Marchande.getRang()== 6,"test du rang du personnage");
 		Test.test(Marchande.getCaracteristiques().equals(Caracteristiques.MARCHANDE),
-				"test des caractéristiques du personnage");
+				"test des caractï¿½ristiques du personnage");
 		Test.test(Marchande.getJoueur()==null, "test de l'initialisation de la variable \"joueur\"");
 		Test.test(Marchande.getAssassine()==false, "test de l'initialisation de la variable \"assassine\"");
 		Test.test(Marchande.getVole()==false, "test de l'initialisation de la variable \"vole\"");
@@ -30,20 +27,22 @@ public class TestMarchande {
 		Marchande marchande = new Marchande();
 		Quartier quartier1 = new Quartier("taverne",Quartier.TYPE_QUARTIERS[3],1);
 		Quartier quartier2 = new Quartier("prison",Quartier.TYPE_QUARTIERS[1],2);
-		Quartier quartier3 = new Quartier("échoppe",Quartier.TYPE_QUARTIERS[3],2);
+		Quartier quartier3 = new Quartier("ï¿½choppe",Quartier.TYPE_QUARTIERS[3],2);
 		marchande.setJoueur(joueur);
 		marchande.ajouterPieces();
 		Test.test(marchande.getJoueur().nbPieces() == 2,
-			"test du nombre de pièces d'or avant perception");
+			"test du nombre de piï¿½ces d'or avant perception");
 		marchande.construire(quartier1);
 		marchande.construire(quartier2);
 		marchande.construire(quartier3);		
 		marchande.percevoirRessourcesSpecifiques();
 		Test.test(marchande.getJoueur().nbPieces() == 4,
-			"test du nombre de pièces d'or après perception de ressources spécifiques avec 2 quartiers commerçants");
-		marchande.utiliserPouvoir();
+			"test du nombre de piï¿½ces d'or aprï¿½s perception de ressources spï¿½cifiques avec 2 quartiers commerï¿½ants");
+		Server server = new Server();
+		boolean estEnLigne = false;
+		marchande.utiliserPouvoir(server, estEnLigne);
 		Test.test(marchande.getJoueur().nbPieces() == 5,
-				"test du nombre de pièces d'or après utilisation du pouvoir");
+				"test du nombre de piï¿½ces d'or aprï¿½s utilisation du pouvoir");
 			
 	}
 }

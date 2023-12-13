@@ -1,13 +1,6 @@
 package test;
 
-import modele.Assassin;
-import modele.Magicienne;
-import modele.Roi;
-
-import modele.Joueur;
-import modele.Pioche;
-import modele.PlateauDeJeu;
-import modele.Quartier;
+import modele.*;
 
 import java.util.ArrayList;
 
@@ -107,8 +100,10 @@ public class TestMagicienne {
 		// on r�cup�re la taille de la pioche:
 		int taillePiocheAvantPouvoir = pioche.nombreElements();
 		
-		// utiliser le pouvoir de la magicienne :		
-		magicienne.utiliserPouvoir();
+		// utiliser le pouvoir de la magicienne :
+		Server server = new Server();
+		boolean estEnLigne = false;
+		magicienne.utiliserPouvoir(server, estEnLigne);
 		
 		// on r�affiche la main de chaque joueur:
 		System.out.print("Main du Roi (" + roi.getJoueur().getNom() + "): ");

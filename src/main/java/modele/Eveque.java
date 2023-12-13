@@ -23,7 +23,8 @@ public class Eveque extends Personnage {
     }
 
     @Override
-    public void utiliserPouvoir() {
+    public void utiliserPouvoir(Server server, boolean estEnLigne) {
+
     }
 
     @Override

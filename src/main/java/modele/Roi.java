@@ -1,5 +1,7 @@
 package modele;
 
+import controleur.InteractionOnline;
+
 import java.util.Random;
 
 public class Roi extends Personnage {
@@ -8,8 +10,9 @@ public class Roi extends Personnage {
     }
 
     @Override
-    public void utiliserPouvoir() {
-        System.out.println("Je prends la couronne");
+    public void utiliserPouvoir(Server server, boolean estEnLigne) {
+        InteractionOnline.targetedMessage(server,estEnLigne, "Vous Prenez la couronne.", this.getNom()+" prend la couronne !", this.getNom());
+
         if (this.getJoueur() != null) {
             this.getJoueur().setPossedeCouronne(true);
         }

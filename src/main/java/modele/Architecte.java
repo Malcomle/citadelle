@@ -1,5 +1,7 @@
 package modele;
 
+import controleur.InteractionOnline;
+
 import java.util.ArrayList;
 
 public class Architecte extends Personnage{
@@ -9,28 +11,29 @@ public class Architecte extends Personnage{
     @Override
     public void utiliserPouvoirAvatar() {
         if (this.getJoueur() != null && !this.getAssassine()) {
-            piocherDeuxCartesSupplementaires();
+            piocherDeuxCartesSupplementaires(null,false);
         }
     }
 
-    private void piocherDeuxCartesSupplementaires() {
+    private void piocherDeuxCartesSupplementaires(Server server, boolean estEnLigne) {
         Pioche pioche = this.getPlateau().getPioche();
         for (int i = 0; i < 2; i++) {
             Quartier cartePiochee = pioche.piocher();
 
             if (cartePiochee != null) {
                 this.getJoueur().ajouterQuartierDansMain(cartePiochee);
-                System.out.println("Le joueur " + this.getJoueur().getNom() + " a pioché une carte : " + cartePiochee.getNom());
+
+                InteractionOnline.targetedMessage(server,estEnLigne,"Vous avez pioché une carte: "+ cartePiochee.getNom(), "Un joueur à pioché une carte supplémentaire", this.getJoueur().getNom());
             } else {
-                System.out.println("La pioche est vide.");
+                InteractionOnline.messageToOne(server,estEnLigne,"La pioche est vide", this.getJoueur().getNom());
             }
         }
     }
 
     @Override
-    public void utiliserPouvoir() {
+    public void utiliserPouvoir(Server server, boolean estEnLigne) {
         if (this.getJoueur() != null && !this.getAssassine()) {
-            piocherDeuxCartesSupplementaires();
+            piocherDeuxCartesSupplementaires(server,estEnLigne);
         }
     }
 

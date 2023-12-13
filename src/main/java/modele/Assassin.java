@@ -1,10 +1,10 @@
 package modele;
 
 import controleur.Interaction;
+import controleur.InteractionOnline;
 
 import java.util.InputMismatchException;
 import java.util.Random;
-import java.util.Scanner;
 
 public class Assassin extends Personnage {
 
@@ -13,27 +13,27 @@ public class Assassin extends Personnage {
     }
 
     @Override
-    public void utiliserPouvoir() {
+    public void utiliserPouvoir(Server server, boolean estEnLigne) {
         PlateauDeJeu plateau = this.getPlateau();
         int nbPersonnage = plateau.getNombrePersonnages();
         int personnageNbChoisi = 0;
 
-        System.out.println("Quel personnage voulez-vous assassiner ?");
+        InteractionOnline.targetedMessage(server, estEnLigne, "Quel personnage voulez-vous assassiner ?", this.getNom()+" utilise son pouvoir", this.getJoueur().getNom());
 
         for (int i = 0; i < nbPersonnage; i++) {
-            System.out.println((i + 1) + ": " + plateau.getPersonnage(i).getNom());
+            InteractionOnline.messageToOne(server, estEnLigne, (i + 1) + ": " + plateau.getPersonnage(i).getNom(), this.getJoueur().getNom());
         }
 
         boolean continu = true;
         do {
             try {
-                personnageNbChoisi = Interaction.lireUnEntier(1, nbPersonnage + 1) - 1;
+                personnageNbChoisi = InteractionOnline.lireUnEntier(server,estEnLigne, this.getJoueur().getNom(), "VOTRE CHOIX: ", 1,nbPersonnage + 1)-1;
 
                 if (personnageNbChoisi < 0 || personnageNbChoisi >= nbPersonnage) {
                     throw new InputMismatchException();
                 }
 
-                executerAssassinat(personnageNbChoisi);
+                executerAssassinat(personnageNbChoisi, server, estEnLigne);
                 continu = false;
             } catch (InputMismatchException e) {
                 System.out.println("Veuillez entrer une valeur correcte");
@@ -53,14 +53,15 @@ public class Assassin extends Personnage {
             personnageNbChoisi = random.nextInt(nbPersonnage);
         } while (plateau.getPersonnage(personnageNbChoisi) instanceof Assassin);
 
-        executerAssassinat(personnageNbChoisi);
+        executerAssassinat(personnageNbChoisi, null, false);
     }
 
-    private void executerAssassinat(int indexPersonnage) {
+    private void executerAssassinat(int indexPersonnage, Server server, boolean estEnLigne) {
         PlateauDeJeu plateau = this.getPlateau();
         Personnage personnageChoisi = plateau.getPersonnage(indexPersonnage);
 
-        System.out.println("Vous venez d'assassiner: " + personnageChoisi.getNom());
+        InteractionOnline.targetedMessage(server,estEnLigne, "Vous venez d'assassiner: " + personnageChoisi.getNom(),
+                personnageChoisi.getJoueur().getNom()+" a été eliminé", this.getJoueur().getNom());
         personnageChoisi.setAssassine();
     }
 }

@@ -1,9 +1,6 @@
 package test;
 
-import modele.Caracteristiques;
-import modele.Joueur;
-import modele.Quartier;
-import modele.Roi;
+import modele.*;
 
 public class TestRoi {
 
@@ -121,15 +118,17 @@ public class TestRoi {
 			"test du nombre de pièces d'or après perception de ressources spécifiques avec 1 quartier noble");
 	}
 	public void test9(){
+		Server server = new Server();
+		boolean estEnLigne = false;
 		System.out.println("TEST DE L'UTILISATION DU POUVOIR DU ROI");
 		Joueur joueur = new Joueur("Billy");
 		Roi roi = new Roi();
-		roi.utiliserPouvoir();
+		roi.utiliserPouvoir(server, estEnLigne);
 		Test.test(roi.getJoueur() == null,
 				"test alors que le joueur n'est pas attribué");
 		roi.setJoueur(joueur);
 		Test.test(roi.getJoueur().getPossedeCouronne() == false, "test avant utilisation");
-		roi.utiliserPouvoir();
+		roi.utiliserPouvoir(server,estEnLigne);
 		Test.test(roi.getJoueur().getPossedeCouronne() == true, "test après utilisation");
 	}
 	public void test10(){

@@ -108,7 +108,7 @@ public abstract class Personnage {
         }
     }
 
-    public abstract void utiliserPouvoir();
+    public abstract void utiliserPouvoir(Server server, boolean estEnLigne);
     public abstract void utiliserPouvoirAvatar();
 
     public void reinitialiser() {
