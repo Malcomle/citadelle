@@ -23,8 +23,9 @@ public class Client {
         this.nomJoueur = nomJoueur;
         sendMessage(nomJoueur);
 
-        // Écouter les messages du serveur dans un nouveau thread
         new Thread(this::listenForServerMessages).start();
+        new Thread(this::sendUserInputToServer).start();
+
     }
 
     private void listenForServerMessages() {
@@ -35,6 +36,17 @@ public class Client {
             }
         } catch (IOException e) {
             System.out.println("Erreur lors de la réception du message du serveur.");
+            e.printStackTrace();
+        }
+    }
+
+    public void sendUserInputToServer() {
+        try (Scanner scanner = new Scanner(System.in)) {
+            while (true) {
+                String userInput = scanner.nextLine();
+                sendMessage(userInput);
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

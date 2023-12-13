@@ -1,9 +1,12 @@
 package application;
 
 import controleur.Interaction;
+import controleur.InteractionOnline;
 import modele.*;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 public class Jeu {
     private PlateauDeJeu plateauDeJeu;
@@ -109,7 +112,7 @@ public class Jeu {
         try {
             new Thread(() -> {
                 try {
-                    client.startConnection("192.168.1.13", port, nomJoueur);
+                    client.startConnection("localhost", port, nomJoueur);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -333,7 +336,11 @@ public class Jeu {
 
 
     private void choixPersonnages(){
-        System.out.println("Choix des personnages : ");
+        if (estEnLigne) {
+            server.sendMessageToAll("server", "Choix des personnages :", "Jeu: ");
+        } else {
+            System.out.println("Choix des personnages :");
+        }
 
         ArrayList<Personnage> listePerso = new ArrayList<>(Arrays.asList(plateauDeJeu.getListePersonnages()));
         Set<Integer> indicesEcartes = new HashSet<>();
@@ -350,49 +357,100 @@ public class Jeu {
         String faceVisible1 = plateauDeJeu.getPersonnage(it.next()).getNom();
         String faceVisible2 = plateauDeJeu.getPersonnage(it.next()).getNom();
 
-        System.out.println("Le personnage `" + faceVisible1 + "` est écarté face visible");
-        System.out.println("Le personnage `" + faceVisible2 + "` est écarté face visible");
-        System.out.println("Un personnage est écarté face cachée");
-
+        if (estEnLigne) {
+            server.sendMessageToAll("server", "Le personnage `" + faceVisible1 + "` est écarté face visible", "Jeu: ");
+            server.sendMessageToAll("server", "Le personnage `" + faceVisible2 + "` est écarté face visible", "Jeu: ");
+            server.sendMessageToAll("server", "Un personnage est écarté face cachée", "Jeu: ");
+        } else {
+            System.out.println("Le personnage `" + faceVisible1 + "` est écarté face visible");
+            System.out.println("Le personnage `" + faceVisible2 + "` est écarté face visible");
+            System.out.println("Un personnage est écarté face cachée");
+        }
 
         int couronne = 0;
         for (int i = 0; i < plateauDeJeu.getNombreJoueurs(); i++) {
             Joueur joueurActuel = plateauDeJeu.getJoueur(i);
-            System.out.println(joueurActuel.getNom() + " Choisissez un personnage");
+
+            if (estEnLigne) {
+                server.sendMessageToOne("server", joueurActuel.getNom() + " Choisissez un personnage", joueurActuel.getNom());
+
+                server.sendMessageToAllExcept("server", joueurActuel.getNom() + " est entrain de choisir un personnage", joueurActuel.getNom());
+            } else {
+                System.out.println(joueurActuel.getNom() + " Choisissez un personnage");
+            }
 
             for (int j = 0; j < listePerso.size(); j++) {
                 String nomPerso = listePerso.get(j).getNom();
                 if (!nomPerso.equals(faceCache) && !nomPerso.equals(faceVisible1) && !nomPerso.equals(faceVisible2)) {
-                    System.out.println(j + " " + nomPerso);
+
+                    if (estEnLigne) {
+                        server.sendMessageToOne("server", j + " " + nomPerso, joueurActuel.getNom());
+                    } else {
+                        System.out.println(j + " " + nomPerso);
+                    }
                 }
             }
-            choix = Interaction.lireUnEntier(0, listePerso.size());
+
+            if(estEnLigne) {
+                CompletableFuture<String> futureResponse = server.askPlayer(joueurActuel.getNom(), "Choisissez un personnage");
+                try {
+                    String response = futureResponse.get();
+                    choix = Integer.parseInt(response);
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                }
+            }else{
+                choix =Interaction.lireUnEntier(0, listePerso.size());
+            }
             Personnage persoChoisi = listePerso.get(choix);
             joueurActuel.choisirPersonnage(persoChoisi);
             listePerso.remove(choix);
 
-            System.out.println(joueurActuel.getMonPersonnage().getNom());
+            if (estEnLigne) {
+                server.sendMessageToOne("server", joueurActuel.getMonPersonnage().getNom(), joueurActuel.getNom());
+            } else {
+                System.out.println(joueurActuel.getMonPersonnage().getNom());
+            }
         }
-
-
-
     };
+
     private void percevoirRessource(Joueur joueurActuel){
             Joueur joueur = joueurActuel;
 
-            System.out.println(joueur.getNom() + ", voulez-vous :");
-            System.out.println("[1] Prendre deux pièces d'or");
-            System.out.println("[2] Piocher deux cartes de la pioche et en garder une");
-            int choix = Interaction.lireUnEntier(1, 3);
+            if (estEnLigne) {
+                server.sendMessageToAll("server", joueur.getNom() + ", voulez-vous :", "Jeu: ");
+                server.sendMessageToAll("server", "[1] Prendre deux pièces d'or", "Jeu: ");
+                server.sendMessageToAll("server", "[2] Piocher deux cartes de la pioche et en garder une", "Jeu: ");
 
-            if (choix == 1) {
+            } else {
+                System.out.println(joueur.getNom() + ", voulez-vous :");
+                System.out.println("[1] Prendre deux pièces d'or");
+                System.out.println("[2] Piocher deux cartes de la pioche et en garder une");
+            }
+
+            int choix = estEnLigne ? InteractionOnline.lireUnEntier(1,3, server) : Interaction.lireUnEntier(1,3);
+
+
+        if (choix == 1) {
                 joueur.ajouterPieces(2);
-                System.out.println("Vous avez reçu deux pièces d'or.");
+                if(estEnLigne){
+                    server.sendMessageToAll("server", "Vous avez reçu deux pièces d'or.", "Jeu: ");
+
+                }else {
+                    System.out.println("Vous avez reçu deux pièces d'or.");
+                }
             } else if (choix == 2) {
                 Quartier carte1 = plateauDeJeu.getPioche().piocher();
                 Quartier carte2 = plateauDeJeu.getPioche().piocher();
-                System.out.println("Vous avez pioché deux cartes : " + carte1.getNom() + " et " + carte2.getNom());
-                System.out.println("Quelle carte voulez-vous garder ? (1 ou 2)");
+
+                if(estEnLigne) {
+                    server.sendMessageToOne("server", "Vous avez pioché deux cartes : " + carte1.getNom() + " et " + carte2.getNom(), "Malcom");
+
+
+                }else {
+                    System.out.println("Vous avez pioché deux cartes : " + carte1.getNom() + " et " + carte2.getNom());
+                    System.out.println("Quelle carte voulez-vous garder ? (1 ou 2)");
+                }
 
                 int choixCarte = Interaction.lireUnEntier(1, 3);
                 if (choixCarte == 1) {

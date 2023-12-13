@@ -8,6 +8,7 @@ public class ClientHandler implements Runnable {
     private PrintWriter out;
     private BufferedReader in;
     private final Server server;
+    public String playerId;
 
     public ClientHandler(Socket socket, Server server) {
         this.clientSocket = socket;
@@ -20,12 +21,13 @@ public class ClientHandler implements Runnable {
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-            String playerId = in.readLine();
+            this.playerId = in.readLine();
             server.addClient(playerId, this);
 
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
-                // Traitement des messages
+                processClientInput(inputLine);
+
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -33,6 +35,22 @@ public class ClientHandler implements Runnable {
             closeConnection();
         }
     }
+
+    private void processClientInput(String input) {
+        server.processClientResponse(this, input);
+    }
+
+
+    public String sendRequestAndWaitForReply(String request) {
+        sendMessage(request);
+        try {
+            return in.readLine(); // Attend la réponse du client
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
     public void sendMessage(String message) {
         out.println(message);

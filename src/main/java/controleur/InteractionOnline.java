@@ -6,7 +6,6 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class InteractionOnline {
-    private static Scanner sc = new Scanner(System.in);
 
 
     public static int lireUnEntier(Server server) {
@@ -16,7 +15,7 @@ public class InteractionOnline {
             try {
                 server.sendMessageToAll("server", "Votre choix", "Jeu: ");
 
-                System.out.print("Votre choix:");
+                Scanner sc = new Scanner(System.in);
                 i = sc.nextInt();
                 continu = false;
 
@@ -38,6 +37,7 @@ public class InteractionOnline {
             try {
                 server.sendMessageToAll("server", "Votre choix", "Jeu: ");
 
+                Scanner sc = new Scanner(System.in);
                 i = sc.nextInt();
 
                 if (i >= borneMin && i < borneMax) {
@@ -60,7 +60,8 @@ public class InteractionOnline {
         do {
             server.sendMessageToAll("server", "Veuillez répondre par 'oui' (o) ou 'non' (n):", "Jeu: ");
 
-            reponse = sc.nextLine().toLowerCase(); // Convertir la réponse en minuscules pour éviter la sensibilité à la casse
+            Scanner sc = new Scanner(System.in);
+            reponse = sc.nextLine().toLowerCase();
         } while (!reponse.equals("oui") && !reponse.equals("o") && !reponse.equals("non") && !reponse.equals("n"));
 
         return reponse.equals("oui") || reponse.equals("o");
@@ -71,6 +72,7 @@ public class InteractionOnline {
         server.sendMessageToAll("server", "Veuillez entrer une chaîne de caractères :", "Jeu: ");
 
         System.out.print("Veuillez entrer une chaîne de caractères : ");
+        Scanner sc = new Scanner(System.in);
         String retour = sc.nextLine();
         return retour;
     }
