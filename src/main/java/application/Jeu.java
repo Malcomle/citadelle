@@ -438,5 +438,4 @@
                 InteractionOnline.generalMessage(server, estEnLigne, joueur.getNom() + " a un score de " + score + " points.");
             }
         }
-
     }

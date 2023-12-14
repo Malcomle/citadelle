@@ -18,7 +18,7 @@ public class Assassin extends Personnage {
         int nbPersonnage = plateau.getNombrePersonnages();
         int personnageNbChoisi = 0;
 
-        InteractionOnline.targetedMessage(server, estEnLigne, "Quel personnage voulez-vous assassiner ?", this.getNom()+" utilise son pouvoir", this.getJoueur().getNom());
+        InteractionOnline.targetedMessage(server, estEnLigne, "Quel personnage voulez-vous assassiner ?", this.getJoueur().getNom()+" utilise son pouvoir", this.getJoueur().getNom());
 
         for (int i = 0; i < nbPersonnage; i++) {
             InteractionOnline.messageToOne(server, estEnLigne, (i + 1) + ": " + plateau.getPersonnage(i).getNom(), this.getJoueur().getNom());

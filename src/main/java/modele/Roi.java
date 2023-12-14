@@ -11,7 +11,7 @@ public class Roi extends Personnage {
 
     @Override
     public void utiliserPouvoir(Server server, boolean estEnLigne) {
-        InteractionOnline.targetedMessage(server,estEnLigne, "Vous Prenez la couronne.", this.getNom()+" prend la couronne !", this.getNom());
+        InteractionOnline.targetedMessage(server,estEnLigne, "Vous Prenez la couronne.", this.getJoueur().getNom()+" prend la couronne !", this.getJoueur().getNom());
 
         if (this.getJoueur() != null) {
             this.getJoueur().setPossedeCouronne(true);
